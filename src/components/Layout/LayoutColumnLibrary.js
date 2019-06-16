@@ -1,9 +1,25 @@
 import React from 'react';
+import IconBoxItem from "../Icon/IconBoxItem";
+import IconBox from "../Icon/IconBox";
+import IconBoxList from "../Icon/IconBoxList";
 
 const LayoutColumnLibrary = (props) => {
+  console.log(props);
+  //This needs to be dynamic, its hardcoded now to [0]
+  const libraryIcons = props.data && props.data.libraries[0].icons;
+
   return (
       <div {...props}>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquam ea enim quibusdam vel. Corporis culpa ducimus ex iure nostrum nulla, numquam, porro praesentium quaerat repudiandae saepe tempora ut veniam voluptatum.</p>
+        <IconBoxList>
+          {props.data &&
+          libraryIcons.map((icon, index) => {
+            return(
+                <IconBoxItem key={index}>
+                  <IconBox data={icon} />
+                </IconBoxItem>
+            )
+          })}
+        </IconBoxList>
       </div>
   );
 };

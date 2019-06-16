@@ -9,5 +9,5 @@ export const theme = {
 
 export const settings = {
   "userColumnSize": 65, //In %
-  "columnMinWidth": 250, //In px
+  "columnMinWidth": 50, //In px
 }

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useLayoutEffect, useRef} from 'react';
 import { settings } from './config'
 import Layout from './components/Layout/Layout'
 import LayoutColumn from './components/Layout/LayoutColumn'
@@ -16,8 +16,12 @@ function App() {
   });
   const [appData, setAppData] = useState(null);
 
+  useLayoutEffect(() => {
+    console.log("test");
+  })
+
   useEffect(() => {
-    fetch('http://localhost:4000/api/init')
+    fetch('http://localhost:4000/api/init?libraries-limit=20')
         .then(res => res.json())
         .then(jsonRes => setAppData(jsonRes));
 
@@ -76,7 +80,7 @@ function App() {
           </LayoutColumn>
           <LayoutResizeableColumns ref={columnsWrapperEl}>
             <LayoutColumn isDragging={columnsHandleIsDragging} style={{width: columnsSizes.left + '%'}}>
-              <LayoutColumnLibrary/>
+              <LayoutColumnLibrary data={appData}/>
             </LayoutColumn>
             <LayoutColumn isDragging={columnsHandleIsDragging} style={{width: columnsSizes.right + '%'}} ref={columnsHandleEl} hasHandle>
               <LayoutColumnUser data={appData}/>
