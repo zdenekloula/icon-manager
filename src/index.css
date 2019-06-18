@@ -20,3 +20,8 @@ p {
   margin: 0 0 1rem 0;
 }
 
+.ReactVirtualized__Grid__innerScrollContainer {
+  overflow-x: hidden !important;
+}
+
+

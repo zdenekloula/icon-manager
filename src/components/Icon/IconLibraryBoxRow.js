@@ -1,14 +1,13 @@
 import React  from 'react';
 import styled from 'styled-components';
 
-const StyledIconBoxRow = styled.ul`
+const StyledIconBoxRow = styled.div`
   display: flex;
-  flex-wrap: wrap;
-  list-style: none;
   padding: 0;
+  margin-bottom: 20px;
 `;
 
-const IconBoxRow = (props) => {
+const IconLibraryBoxRow = (props) => {
   return (
       <StyledIconBoxRow {...props}>
         {props.children}
@@ -16,4 +15,4 @@ const IconBoxRow = (props) => {
   );
 };
 
-export default IconBoxRow;
+export default IconLibraryBoxRow;

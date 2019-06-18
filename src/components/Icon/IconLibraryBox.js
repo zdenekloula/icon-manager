@@ -10,6 +10,8 @@ export const IconBoxContainer = styled.div`
   border-radius: 5px;
   background: ${theme.iconBackground};
   max-width: 200px;
+  height: 100%;
+  overflow: hidden;
 `;
 
 const IconBoxIcon = styled.div`
@@ -22,9 +24,7 @@ const IconBoxIcon = styled.div`
 `;
 
 const IconBoxTitle = styled.h2`
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: block;
   font-size: 14px;
   text-align: center;
   margin: 10px 0 0 0;
@@ -32,7 +32,7 @@ const IconBoxTitle = styled.h2`
   text-overflow: ellipsis;
 `;
 
-const IconBox = (props) => {
+const IconLibraryBox = (props) => {
   const { name, source } = props.data;
   return (
     <IconBoxContainer {...props}>
@@ -42,4 +42,4 @@ const IconBox = (props) => {
   );
 };
 
-export default IconBox;
+export default IconLibraryBox;
