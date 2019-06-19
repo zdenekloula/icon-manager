@@ -9,9 +9,10 @@ export const IconBoxContainer = styled.div`
   padding: 15px;
   border-radius: 5px;
   background: ${theme.iconBackground};
-  max-width: 200px;
+  max-width: 100%;
   height: 100%;
   overflow: hidden;
+  text-align: center;
 `;
 
 const IconBoxIcon = styled.div`

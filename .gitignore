@@ -9,7 +9,8 @@
 /coverage
 
 # production
-/build
+# We want this commented because of future prod release builds
+# /build
 
 # misc
 .DS_Store

@@ -4,7 +4,8 @@ export const theme = {
   "backgroundSecondary": "#1C1C28",
   "iconBackground": "#242633",
   "handleColor": "#30303F",
-  "fontColor": "#fff"
+  "fontColor": "#fff",
+  "columnHeaderHeight": 60,
 }
 
 export const settings = {

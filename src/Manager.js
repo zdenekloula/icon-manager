@@ -69,7 +69,7 @@ function Manager(props) {
           Fixed Column
         </LayoutColumn>
         <LayoutResizeableColumns ref={columnsWrapperEl}>
-          <LayoutColumn isDragging={columnsHandleIsDragging} style={{width: columnsSizes.left + '%'}}>
+          <LayoutColumn isDragging={columnsHandleIsDragging} style={{width: columnsSizes.left + '%'}} isLibraryColumn>
             <LayoutColumnLibrary data={props.appData} />
           </LayoutColumn>
           <LayoutColumn isDragging={columnsHandleIsDragging} style={{width: columnsSizes.right + '%'}} ref={columnsHandleEl} hasHandle>

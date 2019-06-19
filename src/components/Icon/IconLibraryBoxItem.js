@@ -9,11 +9,10 @@ const StyledIconLibraryBoxItem = styled.div`
   flex-direction: column;
   width: 100%;
   position: relative;
-  max-width: 145px;
+  max-width: 350px;
   box-sizing: border-box;
   padding: 0 10px 20px 10px;
 `;
-
 
 const IconLibraryBoxItem = (props) => {
   return (

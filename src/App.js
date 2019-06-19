@@ -6,7 +6,7 @@ function App() {
   const [appData, setAppData] = useState(null);
 
   useEffect(() => {
-    fetch('http://localhost:4000/api/init')
+    fetch('/api/init')
       .then(res => res.json())
       .then(jsonRes => {
         setAppData(jsonRes);

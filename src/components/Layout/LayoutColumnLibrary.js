@@ -1,5 +1,7 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import InfiniteIconList from './InfinityIconList';
+import React, { useState, useCallback } from 'react';
+import LayoutLibraryIconList from './LayoutLibraryIconList';
+import LayoutColumnHeader from './LayoutColumnHeader';
+import LayoutSearch from './LayoutSearch';
 
 
 const LayoutColumnLibrary = (props) => {
@@ -31,18 +33,15 @@ const LayoutColumnLibrary = (props) => {
     }
   }
 
-  /* useEffect(() => {
-    setLibraryIcons(props.data && props.data.libraries[0].icons)
-  }, [libraryIcons]) */
   return (
-      <div {...props}>
-        <div>
-          <input type="text" placeholder="Searching..." name="librarySearch" onChange={handleInputChange} />
-        </div>
-        <div>
-          {libraryIcons && <InfiniteIconList icons={libraryIcons} /> }
-        </div>
+    <div {...props}>
+      <LayoutColumnHeader>
+        <LayoutSearch type="text" placeholder="Searching..." name="librarySearch" onChange={handleInputChange} />
+      </LayoutColumnHeader>
+      <div>
+        {libraryIcons && <LayoutLibraryIconList icons={libraryIcons} /> }
       </div>
+    </div>
   );
 };
 

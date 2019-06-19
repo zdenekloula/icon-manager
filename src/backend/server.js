@@ -3,12 +3,14 @@ const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const figlet = require('figlet');
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
 
+app.use(express.static('build'))
 
 function promiseAllP(items, block) {
   var promises = [];
@@ -73,10 +75,10 @@ app.get('/api/generate-library', async (req, res) => {
     "icons": []
   };
 
-  await readIcons('icons/fa-solid/')
+  await readIcons(path.resolve(__dirname, 'icons/fa-solid'))
       .then(items => libraryJson.icons = items)
       .then(() => {
-        fs.writeFile('./libraries/fa-solid.json', JSON.stringify(libraryJson), (err) => {
+        fs.writeFile(path.resolve(__dirname, 'libraries/fa-solid.json'), JSON.stringify(libraryJson), (err) => {
           if (err) console.log('Error writing file:', err)
         })
       })
@@ -88,17 +90,14 @@ app.get('/api/generate-library', async (req, res) => {
 });
 
 app.get('/api/init', async (req, res) => {
-  console.log(req.query);
-
-
   let projects;
   let libraries;
 
-  await readFiles('projects/')
+  await readFiles(path.resolve(__dirname, 'projects'))
       .then(items => projects = items)
       .catch(err => console.log(err));
 
-  await readFiles('libraries/')
+  await readFiles(path.resolve(__dirname, 'libraries'))
       .then(items => {
         const librariesLimit = req.query["libraries-limit"] ? req.query["libraries-limit"] : false;
         let librariesJson;
@@ -133,7 +132,7 @@ if (!port) {
   port = 4000;
 }
 
-app.listen(port, () =>
-    console.log(`Server running at port ${port}`)
-);
+app.listen(port, () =>{
+    console.log('\x1b[36m%s\x1b[0m', `Icon-manager is running at port ${port}`)
+  });
 

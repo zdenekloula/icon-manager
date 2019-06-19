@@ -11,10 +11,10 @@ const StyledLayoutColumn = styled.div`
   max-height: 100vh;
   user-select: ${({isDragging}) => isDragging && "none"};
   &:first-child {
-    padding: ${({isFixed}) => isFixed ? 0 : "24px 29px 24px 24px"};
+    padding: ${({isFixed}) => isFixed ? 0 : "25px 15px 25px 10px"};
   }
   &:last-child {
-    padding: 24px 24px 24px 29px;
+    padding: 15px 15px 15px 15px;
   }
   ${({isFixed}) => isFixed && `
       padding: 0;
@@ -25,6 +25,9 @@ const StyledLayoutColumn = styled.div`
 const LayoutColumnInner = styled.div`
   max-height: 100%;
   overflow: auto;
+  &:focus {
+    outline: 0;
+  }
 `;
 
 const Handle = styled.div`
@@ -35,6 +38,7 @@ const Handle = styled.div`
   height: 100%;
   background: ${theme.handleColor};
   cursor: col-resize;
+  z-index: 100;
 `;
 
 const LayoutColumn = React.forwardRef((props, ref) => {
