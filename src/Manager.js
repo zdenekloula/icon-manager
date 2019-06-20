@@ -9,6 +9,8 @@ import LayoutColumnUser from "./components/Layout/LayoutColumnUser";
 function Manager(props) {
   const columnsHandleEl = useRef(null);
   const columnsWrapperEl = useRef(null);
+  const [activeLibrary, setActiveLibrary] = useState(0); 
+  const [activeProject, setActiveProject] = useState(0); 
   const [columnsHandleIsDragging, setColumnsHandleIsDragging] = useState(false);
   const [columnsSizes, setColumnsSizes] = useState({
     left: 100 - settings.userColumnSize,
@@ -63,17 +65,32 @@ function Manager(props) {
     };
   }, [columnsHandleIsDragging]);
 
+  const setLibrary = (index) => {
+    console.log("called");
+    console.log(index);
+    setActiveLibrary(index);
+  }
+
   return (
       <Layout>
         <LayoutColumn isFixed>
           Fixed Column
+          <ul>
+            {props.appData.libraries.map((item, index) => {
+              return(
+                <li key={index}>
+                  <a href="#" onClick={() => setLibrary(index)}>{item.name}</a>
+                </li>
+              )
+            })}
+          </ul>
         </LayoutColumn>
         <LayoutResizeableColumns ref={columnsWrapperEl}>
           <LayoutColumn isDragging={columnsHandleIsDragging} style={{width: columnsSizes.left + '%'}} isLibraryColumn>
-            <LayoutColumnLibrary data={props.appData} />
+            <LayoutColumnLibrary data={props.appData} activeLibrary={activeLibrary} />
           </LayoutColumn>
           <LayoutColumn isDragging={columnsHandleIsDragging} style={{width: columnsSizes.right + '%'}} ref={columnsHandleEl} hasHandle>
-            <LayoutColumnUser data={props.appData}/>
+            <LayoutColumnUser data={props.appData} activeProject={activeProject} />
           </LayoutColumn>
         </LayoutResizeableColumns>
       </Layout>

@@ -68,16 +68,22 @@ function readIcons(dirname) {
 }
 
 app.get('/api/generate-library', async (req, res) => {
-  let libraryJson = {
+  /* let libraryJson = {
     "name": "Font Awesome 5 Solid",
     "filename": "fa-solid",
     "icons": []
+  }; */
+
+  let libraryJson = {
+    "name": "Material Design Icons",
+    "filename": "material-icons",
+    "icons": []
   };
 
-  await readIcons(path.resolve(__dirname, 'icons/fa-solid'))
+  await readIcons(path.resolve(__dirname, 'icons/material-icons'))
       .then(items => libraryJson.icons = items)
       .then(() => {
-        fs.writeFile(path.resolve(__dirname, 'libraries/fa-solid.json'), JSON.stringify(libraryJson), (err) => {
+        fs.writeFile(path.resolve(__dirname, 'libraries/material-icons.json'), JSON.stringify(libraryJson), (err) => {
           if (err) console.log('Error writing file:', err)
         })
       })

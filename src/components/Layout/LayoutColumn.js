@@ -11,7 +11,7 @@ const StyledLayoutColumn = styled.div`
   max-height: 100vh;
   user-select: ${({isDragging}) => isDragging && "none"};
   &:first-child {
-    padding: ${({isFixed}) => isFixed ? 0 : "25px 15px 25px 10px"};
+    padding: ${({isFixed}) => isFixed ? 0 : "0"};
   }
   &:last-child {
     padding: 15px 15px 15px 15px;

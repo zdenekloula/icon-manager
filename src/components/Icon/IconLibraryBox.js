@@ -8,7 +8,7 @@ export const IconBoxContainer = styled.div`
   flex-wrap: wrap;
   padding: 15px;
   border-radius: 5px;
-  background: ${theme.iconBackground};
+  background: ${theme.backgroundTertiary};
   max-width: 100%;
   height: 100%;
   overflow: hidden;
@@ -31,6 +31,7 @@ const IconBoxTitle = styled.h2`
   margin: 10px 0 0 0;
   width: 100%;
   text-overflow: ellipsis;
+
 `;
 
 const IconLibraryBox = (props) => {

@@ -1,18 +1,33 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import LayoutLibraryIconList from './LayoutLibraryIconList';
 import LayoutColumnHeader from './LayoutColumnHeader';
 import LayoutSearch from './LayoutSearch';
+import Heading from '../Heading';
 
+const getFilteredIconList = (value, fullList) => {
+  if(!value) {
+    return fullList
+  } else {
+    const filtered = fullList.filter(obj => {
+      return obj.name.includes(value);
+    });
+    return filtered;
+  }
+}
 
 const LayoutColumnLibrary = (props) => {
-  const LIBRARY_DATA = props.data.libraries[0].icons;
-
-  const [libraryIcons, setLibraryIcons] = useState(LIBRARY_DATA);
-  const [inputs, setInputs] = useState({});
+  let LIBRARY_DATA = props.data.libraries[props.activeLibrary].icons;
   
-  //This is going to be dynamic, its hardcoded now to [0]
-  //const libraryIcons = props.data && props.data.libraries[0].icons;
+  const [filteredIcons, setFilteredIcons] = useState(null);
+  const [inputs, setInputs] = useState({});
 
+  useEffect(() => {
+    
+    setFilteredIcons(getFilteredIconList(inputs.librarySearch, LIBRARY_DATA));
+    
+  }, [LIBRARY_DATA, inputs.librarySearch])
+
+  
   const filterIcons = useCallback((value) => {
     const filteredData =  LIBRARY_DATA.filter(obj => {
       return obj.name.includes(value);
@@ -26,20 +41,21 @@ const LayoutColumnLibrary = (props) => {
 
     if(value.length > 0) {
       setInputs(inputs => ({...inputs, [name]: value}));
-      setLibraryIcons(filterIcons(value));
+      setFilteredIcons(filterIcons(value));
     } else {
       setInputs(inputs => ({...inputs, [name]: value}));
-      setLibraryIcons(props.data.libraries[0].icons);
+      setFilteredIcons(LIBRARY_DATA);
     }
   }
 
   return (
-    <div {...props}>
+    <div>
       <LayoutColumnHeader>
+        <Heading element="h1" type="heading1">Library Icons</Heading>
         <LayoutSearch type="text" placeholder="Searching..." name="librarySearch" onChange={handleInputChange} />
       </LayoutColumnHeader>
       <div>
-        {libraryIcons && <LayoutLibraryIconList icons={libraryIcons} /> }
+        {filteredIcons && <LayoutLibraryIconList icons={filteredIcons} /> }
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ export const IconBoxContainer = styled.div`
   flex-wrap: wrap;
   padding: 15px;
   border-radius: 5px;
-  background: ${theme.iconBackground};
+  background: ${theme.backgroundTertiary};
   max-width: 200px;
 `;
 
