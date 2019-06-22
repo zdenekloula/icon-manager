@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { List, AutoSizer } from "react-virtualized";
-import { theme } from '../../config'
 
 import IconBox from '../Icon/IconLibraryBox'
 import IconBoxItem from '../Icon/IconLibraryBoxItem'
@@ -31,7 +30,7 @@ const IconGridContainer = styled.div`
   }
  
   * ::-webkit-scrollbar-thumb {
-    background: rgba(255,255,255,0.4);
+    background: ${(props) => props.theme.scrollbarBg};
     border-radius: 20px;
   }
 

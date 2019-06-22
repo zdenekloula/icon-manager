@@ -1,10 +1,9 @@
 import React  from 'react';
 import styled from 'styled-components';
-import { theme } from '../../config'
 
 const StyledLayoutColumn = styled.div`
   position: relative;
-  background-color: ${({isFixed}) => isFixed ? theme.backgroundPrimary : theme.backgroundSecondary};
+  background-color: ${({isFixed, theme}) => isFixed ? theme.backgroundPrimary : theme.backgroundSecondary};
   color: #fff;
   box-sizing: border-box;
   height: 100vh;
@@ -36,7 +35,7 @@ const Handle = styled.div`
   top: 0;
   width: 10px;
   height: 100%;
-  background: ${theme.handleColor};
+  background: ${(props) => props.theme.handleColor};
   cursor: col-resize;
   z-index: 100;
 `;

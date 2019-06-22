@@ -1,6 +1,6 @@
 import React  from 'react';
 import styled from 'styled-components';
-import { theme } from '../config'
+//import { theme } from '../config'
 
 const ELEMENTS = {
   H1: 'h1',
@@ -18,24 +18,25 @@ const TYPES = {
   HEADING5: "heading5",
 }
 
-const settings = {
-  headingWeight: {
-    [TYPES.HEADING1]: theme.heading.weight.heading1,
-    [TYPES.HEADING2]: theme.heading.weight.heading2,
-    [TYPES.HEADING3]: theme.heading.weight.heading3,
-    [TYPES.HEADING4]: theme.heading.weight.heading4,
-    [TYPES.HEADING5]: theme.heading.weight.heading5
-  },
-  headingSize: {
-    [TYPES.HEADING1]: theme.heading.size.heading1,
-    [TYPES.HEADING2]: theme.heading.size.heading2,
-    [TYPES.HEADING3]: theme.heading.size.heading3,
-    [TYPES.HEADING4]: theme.heading.size.heading4,
-    [TYPES.HEADING5]: theme.heading.size.heading5
-  }
-};
+const getHeading = name => ({type, theme}) =>  {
 
-const getHeading = name => ({ type }) => {
+  const settings = {
+    headingWeight: {
+      [TYPES.HEADING1]: theme.heading.weight.heading1,
+      [TYPES.HEADING2]: theme.heading.weight.heading2,
+      [TYPES.HEADING3]: theme.heading.weight.heading3,
+      [TYPES.HEADING4]: theme.heading.weight.heading4,
+      [TYPES.HEADING5]: theme.heading.weight.heading5
+    },
+    headingSize: {
+      [TYPES.HEADING1]: theme.heading.size.heading1,
+      [TYPES.HEADING2]: theme.heading.size.heading2,
+      [TYPES.HEADING3]: theme.heading.size.heading3,
+      [TYPES.HEADING4]: theme.heading.size.heading4,
+      [TYPES.HEADING5]: theme.heading.size.heading5
+    }
+  };
+
   return settings[name][type];
 };
 
@@ -51,7 +52,7 @@ const StyledHeading = styled(
 )`
   font-size: ${getHeading('headingSize')}px;
   font-weight: ${getHeading('headingWeight')};
-  color: #fff;
+  color: ${({theme}) => theme.fontColor};
   margin: 0;
 `;
 

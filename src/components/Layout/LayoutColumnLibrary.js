@@ -1,8 +1,9 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useContext } from 'react';
 import LayoutLibraryIconList from './LayoutLibraryIconList';
 import LayoutColumnHeader from './LayoutColumnHeader';
 import LayoutSearch from './LayoutSearch';
 import Heading from '../Heading';
+import AppContext from '../../context/AppContext'
 
 const getFilteredIconList = (value, fullList) => {
   if(!value) {
@@ -16,7 +17,9 @@ const getFilteredIconList = (value, fullList) => {
 }
 
 const LayoutColumnLibrary = (props) => {
-  let LIBRARY_DATA = props.data.libraries[props.activeLibrary].icons;
+  const { appData } = useContext(AppContext);
+  //const LIBRARY_DATA = appData.libraries[props.activeLibrary].icons;
+  const LIBRARY_DATA = props.data.libraries[props.activeLibrary].icons;
   
   const [filteredIcons, setFilteredIcons] = useState(null);
   const [inputs, setInputs] = useState({});

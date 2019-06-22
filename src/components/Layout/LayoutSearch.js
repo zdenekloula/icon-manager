@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { theme } from '../../config'
+//import { theme } from '../../config'
 
 const StyledLayoutSearch = styled.input`
   height: 100%;
@@ -11,13 +11,14 @@ const StyledLayoutSearch = styled.input`
   font-size: 18px;
   padding: 0 20px;
   width: 100%;
-  color: #fff;
+  color: ${({theme}) => theme.fontColor};
   height: 45px;
-  margin-top: 10px;
-  background: ${theme.backgroundTertiary}
+  margin-top: 15px;
+  background: ${({theme}) => theme.backgroundTertiary};
 
   &::-webkit-input-placeholder {
-    color: rgba(255, 255, 255, 0.54);
+    color: ${({theme}) => theme.fontColor};
+    opacity: 0.54;
   }
 
   &:focus {

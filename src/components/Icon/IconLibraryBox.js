@@ -1,6 +1,6 @@
 import React  from 'react';
 import styled from 'styled-components';
-import { theme } from '../../config'
+//import { theme } from '../../config'
 
 export const IconBoxContainer = styled.div`
   position: relative;
@@ -8,7 +8,7 @@ export const IconBoxContainer = styled.div`
   flex-wrap: wrap;
   padding: 15px;
   border-radius: 5px;
-  background: ${theme.backgroundTertiary};
+  background: ${(props) => props.theme.backgroundTertiary};
   max-width: 100%;
   height: 100%;
   overflow: hidden;
@@ -17,7 +17,7 @@ export const IconBoxContainer = styled.div`
 
 const IconBoxIcon = styled.div`
   width: 100%;
-  color: ${theme.fontColor};
+  color: ${(props) => props.theme.fontColor};
   svg {
     max-height: 28px;
     fill: currentColor;
@@ -31,7 +31,8 @@ const IconBoxTitle = styled.h2`
   margin: 10px 0 0 0;
   width: 100%;
   text-overflow: ellipsis;
-
+  color: ${(props) => props.theme.fontColor};
+  font-weight: 400;
 `;
 
 const IconLibraryBox = (props) => {

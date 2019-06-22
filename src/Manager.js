@@ -1,10 +1,12 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef } from 'react';
 import { settings } from './config'
 import Layout from './components/Layout/Layout'
 import LayoutColumn from './components/Layout/LayoutColumn'
 import LayoutResizeableColumns from './components/Layout/LayoutResizeableColumns'
 import LayoutColumnLibrary from "./components/Layout/LayoutColumnLibrary";
 import LayoutColumnUser from "./components/Layout/LayoutColumnUser";
+import LayoutColumnFixed from "./components/Layout/LayoutColumnFixed";
+import AppContext, { AppProvider } from './context/AppContext'
 
 function Manager(props) {
   const columnsHandleEl = useRef(null);
@@ -16,6 +18,8 @@ function Manager(props) {
     left: 100 - settings.userColumnSize,
     right: settings.userColumnSize,
   });
+
+
   
   useEffect(() => {
     document.addEventListener('mousedown', (event) => {
@@ -66,24 +70,13 @@ function Manager(props) {
   }, [columnsHandleIsDragging]);
 
   const setLibrary = (index) => {
-    console.log("called");
-    console.log(index);
     setActiveLibrary(index);
   }
 
   return (
       <Layout>
         <LayoutColumn isFixed>
-          Fixed Column
-          <ul>
-            {props.appData.libraries.map((item, index) => {
-              return(
-                <li key={index}>
-                  <a href="#" onClick={() => setLibrary(index)}>{item.name}</a>
-                </li>
-              )
-            })}
-          </ul>
+          <LayoutColumnFixed data={props.appData} setLibrary={setLibrary} activeLibrary={activeLibrary} />
         </LayoutColumn>
         <LayoutResizeableColumns ref={columnsWrapperEl}>
           <LayoutColumn isDragging={columnsHandleIsDragging} style={{width: columnsSizes.left + '%'}} isLibraryColumn>
