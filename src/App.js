@@ -59,63 +59,6 @@ const dark = {
   }
 }
 
-const themes = {
-  dark: {
-    "primary": "#457BF4",
-    "backgroundPrimary": "#14141C",
-    "backgroundSecondary": "#1C1C28",
-    "backgroundTertiary": "#242633",
-    "handleColor": "#30303F",
-    "borderColor": "rgba(255, 255, 255, 0.1)",
-    "scrollbarBg": "rgba(255, 255, 255, 0.4)",
-    "fontColor": "#fff",
-    "columnHeaderHeight": 60,
-    "heading": {
-      "weight": {
-        "heading1": 700,
-        "heading2": 500,
-        "heading3": 400,
-        "heading4": 400,
-        "heading5": 400,
-      },
-      "size": {
-        "heading1": 32,
-        "heading2": 26,
-        "heading3": 22,
-        "heading4": 20,
-        "heading5": 16,
-      }
-    }
-  },
-  light: {
-    "primary": "#457BF4",
-    "backgroundPrimary": "#F8F8F8",
-    "backgroundSecondary": "#fff",
-    "backgroundTertiary": "#f2f2f2",
-    "handleColor": "#E5E5E5",
-    "borderColor": "rgba(0, 0, 0, 0.1)",
-    "scrollbarBg": "rgba(0, 0, 0, 0.4)",
-    "fontColor": "#000",
-    "columnHeaderHeight": 60,
-    "heading": {
-      "weight": {
-        "heading1": 700,
-        "heading2": 500,
-        "heading3": 400,
-        "heading4": 400,
-        "heading5": 400,
-      },
-      "size": {
-        "heading1": 32,
-        "heading2": 26,
-        "heading3": 22,
-        "heading4": 20,
-        "heading5": 16,
-      }
-    }
-  }
-}
-
 function App() {
   const [loading, setLoading] = useState(true);
   const [theme, setTheme] = useState(dark);
@@ -123,6 +66,9 @@ function App() {
 
   const [librariesData, setLibrariesData] = useState(null);
   const [activeLibrary, setActiveLibrary] = useState(0);
+  
+  const [projectsData, setProjectsData] = useState(null);
+  const [activeProject, setActiveProject] = useState(0);
 
   useEffect(() => {
     fetch('/api/init')
@@ -130,11 +76,12 @@ function App() {
       .then(jsonRes => {
         setAppData(jsonRes);
         setLibrariesData(jsonRes.libraries);
+        setProjectsData(jsonRes.projects);
         setLoading(false);
       });
   }, []);
 
-  const switchTheme = (value) => {
+  const switchTheme = () => {
     setTheme(theme === dark ? light : dark)
   }
 
@@ -142,8 +89,25 @@ function App() {
     setLibrariesData(data);
   }
 
+  const updateProjectsData = (data) => {
+    setProjectsData(data);
+  }
+
   return (
-    <AppProvider value={{theme, switchTheme, librariesData, updateLibrariesData, activeLibrary, setActiveLibrary }}>
+    <AppProvider value={{
+        theme, 
+        switchTheme, 
+
+        librariesData, 
+        updateLibrariesData, 
+        activeLibrary, 
+        setActiveLibrary,
+
+        projectsData,
+        setProjectsData,
+        activeProject,
+        setActiveProject
+    }}>
       <ThemeProvider theme={theme}>
         <div className="App">
           { !loading && <Manager appData={appData} />}

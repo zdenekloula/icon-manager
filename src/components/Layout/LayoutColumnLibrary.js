@@ -17,9 +17,8 @@ const getFilteredIconList = (value, fullList) => {
 }
 
 const LayoutColumnLibrary = (props) => {
-  const { appData } = useContext(AppContext);
-  //const LIBRARY_DATA = appData.libraries[props.activeLibrary].icons;
-  const LIBRARY_DATA = props.data.libraries[props.activeLibrary].icons;
+  const { librariesData, activeLibrary } = useContext(AppContext);
+  const LIBRARY_DATA = librariesData[activeLibrary].icons;
   
   const [filteredIcons, setFilteredIcons] = useState(null);
   const [inputs, setInputs] = useState({});

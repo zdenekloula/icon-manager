@@ -5,7 +5,7 @@ import styled from 'styled-components';
 const StyledLayoutColumnHeader = styled.div`
   width: 100%;
   border-bottom: 1px solid ${(props) => props.theme.borderColor};
-  padding: 20px 35px 20px 20px;
+padding: ${(props) => props.columnProjects ? "20px 35px 0 25px" : "20px 35px 20px 20px"};
   background: ${(props) => props.theme.backgroundSecondary};
   z-index: 99;
 `;

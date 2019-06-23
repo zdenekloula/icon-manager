@@ -10,7 +10,7 @@ const IconBoxItem = styled.li`
   flex: 1 1 130px;
   width: 100%;
   position: relative;
-  border-left: 15px solid transparent;
+  border-left: 20px solid transparent;
   margin-bottom: 15px;
   max-width: 20%;
   min-width: 130px;

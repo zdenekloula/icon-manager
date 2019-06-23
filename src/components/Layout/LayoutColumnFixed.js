@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
-import AppContext, { AppProvider } from '../../context/AppContext'
+import AppContext from '../../context/AppContext'
 
 const Header = styled.div`
   padding: 20px; 
@@ -20,6 +20,7 @@ const LibraryList = styled.ul`
 `;
 
 const LibraryLink = styled.a`
+  position: relative;
   display: block;
   padding: 10px 15px;
   border-bottom: 1px solid ${({theme}) => theme.borderColor};
@@ -27,6 +28,20 @@ const LibraryLink = styled.a`
   text-decoration: none;
   background: ${({isActive, theme}) => isActive ? `linear-gradient(-45deg, ${theme.backgroundSecondary}, transparent)` : 'transparent'};
   transition: background 0.3s ease;
+  ${({isActive, theme}) => isActive && `
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: block;
+      background: ${theme.primary};
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+      width: 4px;
+      height: 100%;
+    }
+  `}
 `;
 
 const LibraryItem = styled.li`

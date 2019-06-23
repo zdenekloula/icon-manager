@@ -13,7 +13,8 @@ const StyledLayoutColumn = styled.div`
     padding: ${({isFixed}) => isFixed ? 0 : "0"};
   }
   &:last-child {
-    padding: 15px 15px 15px 15px;
+    //padding: 15px 15px 15px 15px;
+    padding: 0;
   }
   ${({isFixed}) => isFixed && `
       padding: 0;

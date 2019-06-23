@@ -6,7 +6,6 @@ import LayoutResizeableColumns from './components/Layout/LayoutResizeableColumns
 import LayoutColumnLibrary from "./components/Layout/LayoutColumnLibrary";
 import LayoutColumnUser from "./components/Layout/LayoutColumnUser";
 import LayoutColumnFixed from "./components/Layout/LayoutColumnFixed";
-import AppContext, { AppProvider } from './context/AppContext'
 
 function Manager(props) {
   const columnsHandleEl = useRef(null);
