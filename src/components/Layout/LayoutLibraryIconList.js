@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import { List, AutoSizer } from "react-virtualized";
+import styled from 'styled-components';
 
 import IconBox from '../Icon/IconLibraryBox'
 import IconBoxItem from '../Icon/IconLibraryBoxItem'
 import IconBoxRow from '../Icon/IconLibraryBoxRow'
 
-import styled from 'styled-components';
+import AppContext from '../../context/AppContext'
 
 const IconGridContainer = styled.div`
   margin-top: 20px;
@@ -45,8 +46,15 @@ const CARD_HEIGHT = 130;
 const IconGrid = (props) => {
   const { icons } = props;
 
-  const iconClick = (icon) => {
-    console.log(icon.name);
+
+  const { projectsData, updateProjectsData, activeProject } = useContext(AppContext);  
+
+  const iconBoxClick = (icon) => {
+    let newProjectData = [...projectsData];
+
+    newProjectData[activeProject].icons = [...projectsData[activeProject].icons, icon];
+
+    updateProjectsData(newProjectData)
   }
 
   return (
@@ -76,8 +84,8 @@ const IconGrid = (props) => {
                   for (let i = fromIndex; i < toIndex; i++) {
                     let icon = icons[i];
                     items.push(
-                      <IconBoxItem key={i} onClick={(e) => iconClick(icon)}>
-                        <IconBox data={icon} />
+                      <IconBoxItem key={i}>
+                        <IconBox data={icon} onClick={(e) => iconBoxClick(icon)} />
                       </IconBoxItem>
                     );
                   }

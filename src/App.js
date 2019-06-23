@@ -104,7 +104,7 @@ function App() {
         setActiveLibrary,
 
         projectsData,
-        setProjectsData,
+        updateProjectsData,
         activeProject,
         setActiveProject
     }}>
