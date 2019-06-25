@@ -23,6 +23,17 @@ function promiseAllP(items, block) {
   return Promise.all(promises);
 }
 
+function readSingleFile(filePath) {
+  return new Promise((resolve, reject) => {
+      fs.readFile(filePath, 'utf-8', function (err, content) {
+        if (err) return reject(err);
+        const data = JSON.parse(content);
+        return resolve(data);
+      });
+  });
+}
+
+
 function readFiles(dirname) {
   return new Promise((resolve, reject) => {
     fs.readdir(dirname, function (err, filenames) {
@@ -67,6 +78,73 @@ function readIcons(dirname) {
   });
 }
 
+app.post('/api/append-icon', async (req, res) => {
+  // 1. Get data from req (svgSource, projectName)
+  const body = req.body;
+  const iconData = body.iconData;
+  const projectName = body.projectName;
+
+  // 2. Read all data from json
+  const projectData = await readSingleFile(path.resolve(__dirname, 'projects/' + projectName))
+      .then(items => items)
+      .catch(err => console.log(err));
+
+  let newProjectData = projectData;
+
+  // 3. Append new data to json
+  newProjectData.icons.push(iconData);
+
+  // 4. Save data to json
+  fs.writeFile(path.resolve(path.resolve(__dirname, 'projects/' + projectName)), JSON.stringify(newProjectData), (err) => {
+     if (err) console.log('Error writing file:', err)
+  });
+
+  // 5. return req
+  return res.send({
+    iconData,
+    projectName
+  })
+});
+
+app.post('/api/remove-icon', async (req, res) => {
+  // 1. Get data from req (svgSource, projectName)
+  const body = req.body;
+  const iconData = body.iconData;
+  const projectName = body.projectName;
+  const iconName = body.iconName;
+
+  // 2. Read all data from json
+  const projectData = await readSingleFile(path.resolve(__dirname, 'projects/' + projectName))
+      .then(items => items)
+      .catch(err => console.log(err));
+
+  let newProjectData = projectData;
+
+  const iconIndex = (projectData.findIndex((filteredIcon) => filteredIcon.name === iconName));
+
+  console.log(iconIndex);
+
+  // 3. Remove icon from to json
+  //newProjectData.icons.push(iconData);
+
+  return res.send({
+    iconData,
+    projectName
+  });
+
+  // 4. Save data to json
+  fs.writeFile(path.resolve(path.resolve(__dirname, 'projects/' + projectName)), JSON.stringify(newProjectData), (err) => {
+    if (err) console.log('Error writing file:', err)
+  });
+
+  // 5. return req
+  return res.send({
+    iconData,
+    projectName
+  })
+});
+
+
 app.get('/api/generate-library', async (req, res) => {
   /* let libraryJson = {
     "name": "Font Awesome 5 Solid",
@@ -90,7 +168,7 @@ app.get('/api/generate-library', async (req, res) => {
       .catch(err => console.log(err));
 
   return await res.send({
-    libraryJson,
+    libraryJson
   })
 });
 
