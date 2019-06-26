@@ -111,7 +111,7 @@ app.post('/api/remove-icon', async (req, res) => {
   const body = req.body;
   const iconData = body.iconData;
   const projectName = body.projectName;
-  const iconName = body.iconName;
+  const iconName = body.iconData.name;
 
   // 2. Read all data from json
   const projectData = await readSingleFile(path.resolve(__dirname, 'projects/' + projectName))
@@ -120,17 +120,11 @@ app.post('/api/remove-icon', async (req, res) => {
 
   let newProjectData = projectData;
 
-  const iconIndex = (projectData.findIndex((filteredIcon) => filteredIcon.name === iconName));
+  const iconIndex = projectData.icons.findIndex((filteredIcon) => filteredIcon.name === iconName);
 
-  console.log(iconIndex);
 
   // 3. Remove icon from to json
-  //newProjectData.icons.push(iconData);
-
-  return res.send({
-    iconData,
-    projectName
-  });
+  newProjectData.icons.splice(iconIndex, 1);
 
   // 4. Save data to json
   fs.writeFile(path.resolve(path.resolve(__dirname, 'projects/' + projectName)), JSON.stringify(newProjectData), (err) => {
