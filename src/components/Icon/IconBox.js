@@ -10,6 +10,7 @@ export const IconBoxContainer = styled.div`
   border-radius: 5px;
   background: ${(props) => props.theme.backgroundTertiary};
   max-width: 200px;
+  height: 100%;
 `;
 
 const IconBoxIcon = styled.div`

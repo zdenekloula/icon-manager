@@ -10,8 +10,8 @@ import LayoutColumnFixed from "./components/Layout/LayoutColumnFixed";
 function Manager(props) {
   const columnsHandleEl = useRef(null);
   const columnsWrapperEl = useRef(null);
-  const [activeLibrary, setActiveLibrary] = useState(0); 
-  const [activeProject, setActiveProject] = useState(0); 
+  const [activeLibrary, setActiveLibrary] = useState(0);
+  const [activeProject, setActiveProject] = useState(0);
   const [columnsHandleIsDragging, setColumnsHandleIsDragging] = useState(false);
   const [columnsSizes, setColumnsSizes] = useState({
     left: 100 - settings.userColumnSize,
@@ -19,7 +19,7 @@ function Manager(props) {
   });
 
 
-  
+
   useEffect(() => {
     document.addEventListener('mousedown', (event) => {
       if (event.target === columnsHandleEl.current) {
@@ -59,7 +59,7 @@ function Manager(props) {
     };
 
     document.addEventListener('mousemove', setMoveEvent);
-    document.addEventListener('mouseup', function (event) {
+    document.addEventListener('mouseup', function () {
       setColumnsHandleIsDragging(false);
     });
 

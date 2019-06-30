@@ -210,6 +210,6 @@ if (!port) {
 }
 
 app.listen(port, () =>{
-    console.log('\x1b[36m%s\x1b[0m', `Icon-manager is running at port ${port}`)
-  });
+  console.log('\x1b[36m%s\x1b[0m', `Icon-manager is running at port ${port}`)
+});
 

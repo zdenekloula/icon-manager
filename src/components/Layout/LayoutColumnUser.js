@@ -47,12 +47,50 @@ const LibraryItem = styled.li`
   }
 `;
 
+function postData(url = '', data = {}) {
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: data, // body data type must match "Content-Type" header
+  })
+      .then(response => response.json());
+}
 
 const LayoutColumnUser = (props) => {
-  const userIcons = props.data && props.data.projects[0].icons;
-  const { projectsData, activeProject, setActiveProject } = useContext(AppContext);
-  
-  const PROJECT_DATA = projectsData[activeProject].icons
+  const { projectsData, activeProject, setActiveProject, updateProjectsData } = useContext(AppContext);
+
+  const PROJECT_DATA = projectsData[activeProject].icons;
+
+
+  const iconBoxClick = (icon) => {
+
+    let newProjectData = [...projectsData];
+    // Do api backend call to remove icons
+    const iconName = icon.name;
+
+     postData('/api/remove-icon', JSON.stringify({
+      "iconData": icon,
+      "projectName": newProjectData[activeProject].filename
+    }))
+        .then(() => console.log("Ikona " + iconName + " odebrana."))
+        .catch(error => console.error(error));
+
+    const projectIcons = newProjectData[activeProject].icons;
+
+    const iconIndex = (projectIcons.findIndex((filteredIcon) => filteredIcon.name === icon.name));
+
+    const newProjectIcons = [...newProjectData[activeProject].icons.slice(0,iconIndex),
+      ...newProjectData[activeProject].icons.slice(iconIndex + 1,newProjectData[activeProject].icons.length)];
+
+    // Prepare icons data
+    newProjectData[activeProject].icons = newProjectIcons;
+
+    // React context update
+    updateProjectsData(newProjectData);
+
+  };
 
   return (
       <div>
@@ -73,7 +111,7 @@ const LayoutColumnUser = (props) => {
           {PROJECT_DATA.map((icon, index) => {
             return(
               <IconBoxItem key={index}>
-                <IconBox data={icon} />
+                <IconBox data={icon} onClick={() => iconBoxClick(icon)} />
               </IconBoxItem>
             )
           })}

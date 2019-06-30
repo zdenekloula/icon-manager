@@ -43,26 +43,63 @@ const IconGridContainer = styled.div`
 
 const CARD_HEIGHT = 130;
 
+const checkIconExists = (iconName, icons) => {
+  let exists = false;
+  for (const key in icons) {
+    const projectIcon = icons[key];
+    if(iconName === projectIcon.name) {
+      exists = true;
+    }
+  }
+  return exists;
+};
+
+function postData(url = '', data = {}) {
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: data, // body data type must match "Content-Type" header
+  })
+      .then(response => response.json());
+}
+
 const IconGrid = (props) => {
   const { icons } = props;
 
 
-  const { projectsData, updateProjectsData, activeProject } = useContext(AppContext);  
+  const { projectsData, updateProjectsData, activeProject } = useContext(AppContext);
 
   const iconBoxClick = (icon) => {
     let newProjectData = [...projectsData];
+    const projectIcons = newProjectData[activeProject].icons;
+    const iconName = icon.name;
 
-    newProjectData[activeProject].icons = [...projectsData[activeProject].icons, icon];
+    if (!checkIconExists(iconName, projectIcons)) {
+      postData('/api/append-icon', JSON.stringify({
+        "iconData": icon,
+        "projectName": newProjectData[activeProject].filename
+      }))
+        .then(() => console.log("Ikona " + iconName + " pridana."))
+        .catch(error => console.error(error));
 
-    updateProjectsData(newProjectData)
-  }
+      // Prepare icons data
+      newProjectData[activeProject].icons = [...projectsData[activeProject].icons, icon];
+
+      // React context update
+      updateProjectsData(newProjectData);
+    } else {
+      console.log("vami zadana ikona jiz existuje");
+    }
+  };
 
   return (
     <IconGridContainer>
      <AutoSizer>
         {({ height, width }) => {
           let itemsPerRow = Math.floor(width / CARD_HEIGHT) > 4 ? 4 : Math.floor(width / CARD_HEIGHT) || 1;
-          
+
           const rowCount = Math.ceil(icons.length / itemsPerRow);
 
           return (
