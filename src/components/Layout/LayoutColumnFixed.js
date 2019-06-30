@@ -1,10 +1,11 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import AppContext from '../../context/AppContext'
+import ThemeToggle from '../ThemeToggle';
 
 const Header = styled.div`
   padding: 20px; 
-  margin-bottom: 67px;
+  margin-bottom: 0;
 `;
 
 const LogoContainer = styled.div`
@@ -16,7 +17,6 @@ const LogoContainer = styled.div`
 const LibraryList = styled.ul`
   list-style-type: none;
   padding: 0;
-  
 `;
 
 const LibraryLink = styled.a`
@@ -52,12 +52,13 @@ const LibraryItem = styled.li`
   }
 `;
 
-const LayoutColumnLibrary = (props) => {
-  const { switchTheme, librariesData, updateLibrariesData, activeLibrary, setActiveLibrary } = useContext(AppContext)
+const ToggleContainer = styled.div`
+  padding: 0 20px;
+  margin-bottom: 42px;
+`;
 
-  const switchTestTheme = () => {
-    switchTheme()
-  }
+const LayoutColumnLibrary = (props) => {
+  const { librariesData, updateLibrariesData, activeLibrary, setActiveLibrary } = useContext(AppContext)
 
   const appendTestLibrary  = () => {
     let testLibrary = {
@@ -75,10 +76,11 @@ const LayoutColumnLibrary = (props) => {
             <path d="M8.51534 12.8211H21.4287C21.7094 12.8211 21.9278 12.6947 22.0837 12.4421C22.2085 12.2211 22.2085 11.9368 22.0837 11.6842L15.6271 0.378947C15.4711 0.126316 15.2527 0 14.972 0C14.6913 0 14.473 0.126316 14.317 0.378947L7.86031 11.7158C7.73555 11.9368 7.73555 12.2211 7.86031 12.4737C7.98508 12.6947 8.23461 12.8211 8.51534 12.8211ZM12.5391 7.73684C12.5391 6.37895 13.6308 5.27368 14.972 5.27368C16.3133 5.27368 17.405 6.37895 17.405 7.73684C17.405 9.09474 16.3133 10.2 14.972 10.2C13.6308 10.2 12.5391 9.09474 12.5391 7.73684Z"/>
           </svg>
         </LogoContainer>
-        <br />
-        <button onClick={switchTestTheme}>Switch Theme</button>
-        <button onClick={appendTestLibrary}>Append Library</button>
+        {/* <button onClick={switchTestTheme}>Switch Theme</button> */}
       </Header>
+      <ToggleContainer>
+        <ThemeToggle />
+      </ToggleContainer>
       <div>
         <LibraryList>
           {librariesData.map((item, index) => (
@@ -88,6 +90,7 @@ const LayoutColumnLibrary = (props) => {
           ))}
         </LibraryList>
       </div>
+      <button onClick={appendTestLibrary}>Append Library</button>
     </div>
   );
 };

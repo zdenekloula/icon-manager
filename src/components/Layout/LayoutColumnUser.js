@@ -53,7 +53,7 @@ function postData(url = '', data = {}) {
     headers: {
       'Content-Type': 'application/json',
     },
-    body: data, // body data type must match "Content-Type" header
+    body: data, // body data type must match "Content-Type" header, it's json in this case
   })
       .then(response => response.json());
 }
@@ -81,8 +81,10 @@ const LayoutColumnUser = (props) => {
 
     const iconIndex = (projectIcons.findIndex((filteredIcon) => filteredIcon.name === icon.name));
 
-    const newProjectIcons = [...newProjectData[activeProject].icons.slice(0,iconIndex),
-      ...newProjectData[activeProject].icons.slice(iconIndex + 1,newProjectData[activeProject].icons.length)];
+    const newProjectIcons = [
+      ...newProjectData[activeProject].icons.slice(0,iconIndex),
+      ...newProjectData[activeProject].icons.slice(iconIndex + 1, newProjectData[activeProject].icons.length)
+    ];
 
     // Prepare icons data
     newProjectData[activeProject].icons = newProjectIcons;

@@ -4,6 +4,7 @@ import { AppProvider } from './context/AppContext'
 import Manager from './Manager';
 
 const light = {
+  "THEME_NAME": "light",
   "primary": "#457BF4",
   "backgroundPrimary": "#F8F8F8",
   "backgroundSecondary": "#fff",
@@ -32,6 +33,7 @@ const light = {
 }
 
 const dark = {
+  "THEME_NAME": "dark",
   "primary": "#457BF4",
   "backgroundPrimary": "#14141C",
   "backgroundSecondary": "#1C1C28",

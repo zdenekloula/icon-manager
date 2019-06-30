@@ -62,12 +62,11 @@ function postData(url = '', data = {}) {
     },
     body: data, // body data type must match "Content-Type" header
   })
-      .then(response => response.json());
+  .then(response => response.json());
 }
 
 const IconGrid = (props) => {
   const { icons } = props;
-
 
   const { projectsData, updateProjectsData, activeProject } = useContext(AppContext);
 
@@ -90,6 +89,7 @@ const IconGrid = (props) => {
       // React context update
       updateProjectsData(newProjectData);
     } else {
+      // There will be "already exists notification";
       console.log("vami zadana ikona jiz existuje");
     }
   };
