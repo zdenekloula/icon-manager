@@ -11,6 +11,7 @@
 # production
 # We want this commented because of future prod release builds
 # /build
+# src/backend/__temp__
 
 # misc
 .DS_Store
