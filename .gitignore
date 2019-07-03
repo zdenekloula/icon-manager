@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+src/backend/__temp__/
 
 # testing
 /coverage
@@ -11,7 +12,6 @@
 # production
 # We want this commented because of future prod release builds
 # /build
-# src/backend/__temp__
 
 # misc
 .DS_Store
