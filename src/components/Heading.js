@@ -19,7 +19,6 @@ const TYPES = {
 }
 
 const getHeading = name => ({type, theme}) =>  {
-
   const settings = {
     headingWeight: {
       [TYPES.HEADING1]: theme.heading.weight.heading1,
@@ -36,7 +35,6 @@ const getHeading = name => ({type, theme}) =>  {
       [TYPES.HEADING5]: theme.heading.size.heading5
     }
   };
-
   return settings[name][type];
 };
 

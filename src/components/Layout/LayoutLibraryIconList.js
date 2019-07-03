@@ -2,6 +2,8 @@ import React, { useContext } from "react";
 import { List, AutoSizer } from "react-virtualized";
 import styled from 'styled-components';
 
+import { checkIconExists, getIconWithIndex } from '../../utils/helpers'
+
 import IconBox from '../Icon/IconLibraryBox'
 import IconBoxItem from '../Icon/IconLibraryBoxItem'
 import IconBoxRow from '../Icon/IconLibraryBoxRow'
@@ -43,17 +45,6 @@ const IconGridContainer = styled.div`
 
 const CARD_HEIGHT = 130;
 
-const checkIconExists = (iconName, icons) => {
-  let exists = false;
-  for (const key in icons) {
-    const projectIcon = icons[key];
-    if(iconName === projectIcon.name) {
-      exists = true;
-    }
-  }
-  return exists;
-};
-
 function postData(url = '', data = {}) {
   return fetch(url, {
     method: 'POST',
@@ -89,6 +80,20 @@ const IconGrid = (props) => {
       // React context update
       updateProjectsData(newProjectData);
     } else {
+      const newIcon = getIconWithIndex(icon, projectIcons);
+
+      postData('/api/append-icon', JSON.stringify({
+        "iconData": newIcon,
+        "projectName": newProjectData[activeProject].filename
+      }))
+        .then(() => console.log("Ikona " + iconName + " pridana."))
+        .catch(error => console.error(error));
+  
+      newProjectData[activeProject].icons = [...projectsData[activeProject].icons, newIcon];
+
+      // React context update
+      updateProjectsData(newProjectData);
+
       // There will be "already exists notification";
       console.log("vami zadana ikona jiz existuje");
     }

@@ -19,6 +19,7 @@ const IconBoxIcon = styled.div`
   svg {
     max-height: 28px;
     fill: currentColor;
+    width: 100%;
   }
 `;
 

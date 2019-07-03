@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 
+import { removeExtension, checkIconExists, getIconWithIndex, readTextFileAsync, postData } from '../../utils/helpers'
+
 import Heading from '../Heading';
 import IconBox from "../Icon/IconBox";
 import IconBoxList from "../Icon/IconBoxList";
@@ -47,52 +49,87 @@ const LibraryItem = styled.li`
   }
 `;
 
-function postData(url = '', data = {}) {
-  return fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: data, // body data type must match "Content-Type" header, it's json in this case
-  })
-      .then(response => response.json());
-}
-
 const LayoutColumnUser = (props) => {
   const { projectsData, activeProject, setActiveProject, updateProjectsData } = useContext(AppContext);
-
   const PROJECT_DATA = projectsData[activeProject].icons;
 
-
   const iconBoxClick = (icon) => {
-
     let newProjectData = [...projectsData];
-    // Do api backend call to remove icons
     const iconName = icon.name;
-
-     postData('/api/remove-icon', JSON.stringify({
-      "iconData": icon,
-      "projectName": newProjectData[activeProject].filename
-    }))
-        .then(() => console.log("Ikona " + iconName + " odebrana."))
-        .catch(error => console.error(error));
-
     const projectIcons = newProjectData[activeProject].icons;
-
     const iconIndex = (projectIcons.findIndex((filteredIcon) => filteredIcon.name === icon.name));
-
     const newProjectIcons = [
       ...newProjectData[activeProject].icons.slice(0,iconIndex),
       ...newProjectData[activeProject].icons.slice(iconIndex + 1, newProjectData[activeProject].icons.length)
     ];
 
+    /* Data update React Context + Backend */
+
     // Prepare icons data
     newProjectData[activeProject].icons = newProjectIcons;
-
     // React context update
     updateProjectsData(newProjectData);
 
+    //Post data to backend
+    postData('/api/remove-icon', JSON.stringify({
+      "iconData": icon,
+      "projectName": newProjectData[activeProject].filename
+    }))
+      .then(res => {
+        console.log("Client: Ikona " + iconName + " odebrana.")
+      })
+      .catch(error => console.error(error));
   };
+
+  const generateLibrary = () => {
+    console.log("generate library")
+  }
+
+  const appendIcon = async (event) => {
+    let newProjectData = [...projectsData];
+    let iconsToAppend = [];
+    const inputFiles = event.target.files; 
+    const projectIcons = newProjectData[activeProject].icons;
+
+    if(inputFiles.length > 0) {
+      for(let i = 0; i < inputFiles.length; i++) {
+        const files = inputFiles[i];
+        const filename = files.name;
+        const name = removeExtension(filename);
+
+        let icon = {
+          "filename": "",
+          "name": "",
+          "source": ""
+        }
+        icon.filename = filename;
+        icon.name = name;
+        icon.source = await readTextFileAsync(files);
+
+        if (!checkIconExists(name, projectIcons)) {
+          iconsToAppend.push(icon);
+        } else {
+          const newIcon = getIconWithIndex(icon, projectIcons);
+          iconsToAppend.push(newIcon);
+        }
+      }
+    } else {
+      console.log("chyba uploadu");
+    }
+
+    for(let i = 0; i < iconsToAppend.length; i++) {
+      newProjectData[activeProject].icons = [...projectsData[activeProject].icons, iconsToAppend[i]];
+    }
+    updateProjectsData(newProjectData);
+
+    postData('/api/upload-icon', JSON.stringify({
+      "icons": iconsToAppend,
+      "projectName": newProjectData[activeProject].filename
+    }))
+      .then(() => console.log("Ikony pridany."))
+      .catch(error => console.error(error));
+
+  }
 
   return (
       <div>
@@ -118,6 +155,17 @@ const LayoutColumnUser = (props) => {
             )
           })}
         </IconBoxList>
+
+        <div>
+          <label>Path to final folder</label>
+          <input type="text" />
+          <button onClick={generateLibrary}>
+            Generovat
+          </button>
+          <br/>
+
+          <input type="file" name="test" id="test" onChange={(event) => appendIcon(event)} multiple/>
+        </div>
       </div>
   );
 };

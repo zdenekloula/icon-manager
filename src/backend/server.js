@@ -4,6 +4,49 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 
+const SVGO = require('svgo');
+const mkdirp = require('mkdirp');
+const File = require('vinyl');
+const glob = require('glob');
+const SVGSpriter = require('svg-sprite');
+
+const spriter = new SVGSpriter({
+  dest: 'out',
+  mode: {
+    inline: true,
+    symbol: true,
+    defs: true,
+  },
+  shape: { // SVG shape related options
+    id: { // SVG shape ID related options
+      generator: function(name, file) {
+        const nameWithoutExtension = name.split('.').slice(0, -1).join('.');
+        return 'icon-' + nameWithoutExtension;
+      },
+    },
+    "transform": [],
+  }
+});
+
+const svgo = new SVGO({
+  plugins: [
+    {
+      inlineStyles: {
+        onlyMatchedOnce: false
+      }
+    },
+    {
+      removeDimensions: true
+    },
+    {
+      removeViewBox: false
+    },
+    {
+      cleanupEnableBackground: true
+    }
+  ]
+});
+
 const app = express();
 
 app.use(cors());
@@ -32,7 +75,6 @@ function readSingleFile(filePath) {
       });
   });
 }
-
 
 function readFiles(dirname) {
   return new Promise((resolve, reject) => {
@@ -95,14 +137,128 @@ app.post('/api/append-icon', async (req, res) => {
   newProjectData.icons.push(iconData);
 
   // 4. Save data to json
-  fs.writeFile(path.resolve(path.resolve(__dirname, 'projects/' + projectName)), JSON.stringify(newProjectData), (err) => {
+  fs.writeFile(
+    path.resolve(path.resolve(__dirname, 'projects/' + projectName)), 
+    JSON.stringify(newProjectData), (err) => {
      if (err) console.log('Error writing file:', err)
-  });
+    }
+  );
 
   // 5. return req
   return res.send({
     iconData,
     projectName
+  })
+});
+
+
+app.post('/api/generate-sprite', async (req, res) => {
+  const TEMP_FOLDER = './__temp__';
+  const TEMP_FOLDER_DIR = path.resolve(__dirname, TEMP_FOLDER);
+
+  // 1. Get project json
+
+  const projectData = await readSingleFile(path.resolve(__dirname, 'projects/nzip.json'))
+      .then(items => items)
+      .catch(err => console.log(err));
+
+  // 2. Create temp folder with all SVGs from JSON project for sprite generation
+
+  if (!fs.existsSync(TEMP_FOLDER)){
+      await fs.mkdirSync(TEMP_FOLDER);
+  }
+  
+  await projectData.icons.map(icon => {
+
+    //This needs to be tested with custom weird output icons
+
+    svgo.optimize(icon.source).then(({data}) => {
+      fs.writeFile(
+        path.resolve(path.resolve(__dirname, TEMP_FOLDER + '/' + icon.filename)), 
+        data, 
+        (err) => {
+          if (err) console.log('Error writing file:', err)
+        }
+      );
+    });
+
+  });
+
+  // 3. Load all SVGs into generator from temp folder
+
+  await glob.glob('**/*.svg', { cwd: TEMP_FOLDER_DIR }, function (err, files) {
+    files.forEach(function (file) {
+      // Create and add a vinyl file instance for each SVG
+      spriter.add(new File({
+          path: path.join(TEMP_FOLDER_DIR, file),
+          base: TEMP_FOLDER_DIR,
+          contents: fs.readFileSync(path.join(TEMP_FOLDER_DIR, file))
+      }));
+
+      spriter.compile(function (error, result, data) {
+          for (let mode in result) {
+            for (let resource in result[mode]) {
+              mkdirp.sync(path.dirname(result[mode][resource].path));
+              fs.writeFileSync(result[mode][resource].path, result[mode][resource].contents);
+            }
+          }
+      });
+    })
+  });
+  
+  // 4. Compile added SVGs into single svg sprite 
+
+  // 5. Clear icons
+
+  /* fs.readdir(TEMP_FOLDER, (err, files) => {
+    if (err) throw err;
+  
+    for (const file of files) {
+      fs.unlink(path.join(TEMP_FOLDER, file), err => {
+        if (err) throw err;
+      });
+    }
+  }); */
+
+  // 6. Return result
+  return await res.send('done?');
+});
+
+app.post('/api/upload-icon', async (req, res) => {
+  // 1. Get data from req (svgSource, projectName)
+  const body = req.body;
+  const iconsData = body.icons;
+  const projectName = body.projectName;
+  
+  let projectData;
+  let failedIcons = [];
+
+  // 2. Read all data from json
+  projectData = await readSingleFile(path.resolve(__dirname, 'projects/' + projectName))
+      .then(items => items)
+      .catch(err => console.log(err));
+
+  // 3. Prepare icons from request to array
+  for(let i = 0; i < iconsData.length; i++) {
+    if(iconsData[i].filename && iconsData[i].name && iconsData[i].source) {
+      let iconData = iconsData[i];
+      await svgo.optimize(iconData.source).then(({data}) => {
+        iconData.source = data;
+        projectData.icons.push(iconData);
+      });
+    } else {
+      failedIcons.push(iconsData[i]);
+    }
+  }
+
+  // 4. Save data to json
+  await fs.writeFile(path.resolve(__dirname, 'projects/' + projectName), JSON.stringify(projectData), (err) => {
+    if (err) console.log('Error writing file:', err)
+  });
+
+  // 5. return req
+  return await res.send({
+    "failedIcons": failedIcons
   })
 });
 
@@ -122,7 +278,6 @@ app.post('/api/remove-icon', async (req, res) => {
 
   const iconIndex = projectData.icons.findIndex((filteredIcon) => filteredIcon.name === iconName);
 
-
   // 3. Remove icon from to json
   newProjectData.icons.splice(iconIndex, 1);
 
@@ -137,7 +292,6 @@ app.post('/api/remove-icon', async (req, res) => {
     projectName
   })
 });
-
 
 app.get('/api/generate-library', async (req, res) => {
   /* let libraryJson = {
