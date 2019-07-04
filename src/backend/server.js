@@ -11,11 +11,11 @@ const glob = require('glob');
 const SVGSpriter = require('svg-sprite');
 
 const spriter = new SVGSpriter({
-  dest: 'out',
+  dest: 'export',
   mode: {
     inline: true,
     symbol: true,
-    defs: true,
+    defs: false,
   },
   shape: { // SVG shape related options
     id: { // SVG shape ID related options
@@ -156,9 +156,13 @@ app.post('/api/generate-sprite', async (req, res) => {
   const TEMP_FOLDER = './__temp__';
   const TEMP_FOLDER_DIR = path.resolve(__dirname, TEMP_FOLDER);
 
+  const body = req.body;
+  const exportPath = body.exportPath;
+  const projectName = body.projectName;
+
   // 1. Get project json
 
-  const projectData = await readSingleFile(path.resolve(__dirname, 'projects/nzip.json'))
+  const projectData = await readSingleFile(path.resolve(__dirname, 'projects/' + projectName))
       .then(items => items)
       .catch(err => console.log(err));
 
@@ -169,9 +173,6 @@ app.post('/api/generate-sprite', async (req, res) => {
   }
   
   await projectData.icons.map(icon => {
-
-    //This needs to be tested with custom weird output icons
-
     svgo.optimize(icon.source).then(({data}) => {
       fs.writeFile(
         path.resolve(path.resolve(__dirname, TEMP_FOLDER + '/' + icon.filename)), 
@@ -181,7 +182,6 @@ app.post('/api/generate-sprite', async (req, res) => {
         }
       );
     });
-
   });
 
   // 3. Load all SVGs into generator from temp folder
@@ -196,12 +196,12 @@ app.post('/api/generate-sprite', async (req, res) => {
       }));
 
       spriter.compile(function (error, result, data) {
-          for (let mode in result) {
-            for (let resource in result[mode]) {
-              mkdirp.sync(path.dirname(result[mode][resource].path));
-              fs.writeFileSync(result[mode][resource].path, result[mode][resource].contents);
-            }
+        for (let mode in result) {
+          for (let resource in result[mode]) {
+            mkdirp.sync(path.dirname(path.resolve(__dirname, exportPath + 'icons.svg')));
+            fs.writeFileSync(path.resolve(__dirname, exportPath + 'icons.svg'), result[mode][resource].contents);
           }
+        }
       });
     })
   });
