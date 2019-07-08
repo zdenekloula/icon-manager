@@ -76,7 +76,7 @@ function readSingleFile(filePath) {
   });
 }
 
-function readFiles(dirname) {
+function readLibraries(dirname) {
   return new Promise((resolve, reject) => {
     fs.readdir(dirname, function (err, filenames) {
       if (err) return reject(err);
@@ -88,14 +88,20 @@ function readFiles(dirname) {
           return resolve(outputData);
         });
       })
-          .then(results => {
-            return resolve(results);
-          })
-          .catch(error => {
-            return reject(error);
-          });
+        .then(results => {
+          return resolve(results);
+        })
+        .catch(error => {
+          return reject(error);
+        });
     });
   });
+}
+
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
 }
 
 function readIcons(dirname) {
@@ -123,8 +129,8 @@ function readIcons(dirname) {
 app.post('/api/append-icon', async (req, res) => {
   // 1. Get data from req (svgSource, projectName)
   const body = req.body;
-  const iconData = body.iconData;
   const projectName = body.projectName;
+  const iconData = body.iconData;
 
   // 2. Read all data from json
   const projectData = await readSingleFile(path.resolve(__dirname, 'projects/' + projectName))
@@ -132,6 +138,10 @@ app.post('/api/append-icon', async (req, res) => {
       .catch(err => console.log(err));
 
   let newProjectData = projectData;
+
+  await svgo.optimize(iconData.source).then(({data}) => {
+    iconData.source_min = data;
+  });
 
   // 3. Append new data to json
   newProjectData.icons.push(iconData);
@@ -151,6 +161,43 @@ app.post('/api/append-icon', async (req, res) => {
   })
 });
 
+app.post('/api/upload-icon', async (req, res) => {
+  // 1. Get data from req (svgSource, projectName)
+  const body = req.body;
+  const iconsData = body.icons;
+  const projectName = body.projectName;
+  
+  let projectData;
+  let failedIcons = [];
+
+  // 2. Read all data from json
+  projectData = await readSingleFile(path.resolve(__dirname, 'projects/' + projectName))
+      .then(items => items)
+      .catch(err => console.log(err));
+
+  // 3. Prepare icons from request to array
+  for(let i = 0; i < iconsData.length; i++) {
+    if(iconsData[i].filename && iconsData[i].name && iconsData[i].source) {
+      let iconData = iconsData[i];
+      await svgo.optimize(iconData.source).then(({data}) => {
+        iconData.source_min = data;
+        projectData.icons.push(iconData);
+      });
+    } else {
+      failedIcons.push(iconsData[i]);
+    }
+  }
+
+  // 4. Save data to json
+  await fs.writeFile(path.resolve(__dirname, 'projects/' + projectName), JSON.stringify(projectData), (err) => {
+    if (err) console.log('Error writing file:', err)
+  });
+
+  // 5. return req
+  return await res.send({
+    "failedIcons": failedIcons
+  })
+});
 
 app.post('/api/generate-sprite', async (req, res) => {
   const TEMP_FOLDER = './__temp__';
@@ -186,16 +233,14 @@ app.post('/api/generate-sprite', async (req, res) => {
 
   // 3. Load all SVGs into generator from temp folder
 
-  await glob.glob('**/*.svg', { cwd: TEMP_FOLDER_DIR }, function (err, files) {
-    files.forEach(function (file) {
-      // Create and add a vinyl file instance for each SVG
+  await glob.glob('**/*.svg', { cwd: TEMP_FOLDER_DIR }, (err, files) => {
+    files.forEach(file => {
       spriter.add(new File({
           path: path.join(TEMP_FOLDER_DIR, file),
           base: TEMP_FOLDER_DIR,
           contents: fs.readFileSync(path.join(TEMP_FOLDER_DIR, file))
       }));
-
-      spriter.compile(function (error, result, data) {
+      spriter.compile((error, result, data) => {
         for (let mode in result) {
           for (let resource in result[mode]) {
             mkdirp.sync(path.dirname(path.resolve(__dirname, exportPath + 'icons.svg')));
@@ -222,44 +267,6 @@ app.post('/api/generate-sprite', async (req, res) => {
 
   // 6. Return result
   return await res.send('done?');
-});
-
-app.post('/api/upload-icon', async (req, res) => {
-  // 1. Get data from req (svgSource, projectName)
-  const body = req.body;
-  const iconsData = body.icons;
-  const projectName = body.projectName;
-  
-  let projectData;
-  let failedIcons = [];
-
-  // 2. Read all data from json
-  projectData = await readSingleFile(path.resolve(__dirname, 'projects/' + projectName))
-      .then(items => items)
-      .catch(err => console.log(err));
-
-  // 3. Prepare icons from request to array
-  for(let i = 0; i < iconsData.length; i++) {
-    if(iconsData[i].filename && iconsData[i].name && iconsData[i].source) {
-      let iconData = iconsData[i];
-      await svgo.optimize(iconData.source).then(({data}) => {
-        iconData.source = data;
-        projectData.icons.push(iconData);
-      });
-    } else {
-      failedIcons.push(iconsData[i]);
-    }
-  }
-
-  // 4. Save data to json
-  await fs.writeFile(path.resolve(__dirname, 'projects/' + projectName), JSON.stringify(projectData), (err) => {
-    if (err) console.log('Error writing file:', err)
-  });
-
-  // 5. return req
-  return await res.send({
-    "failedIcons": failedIcons
-  })
 });
 
 app.post('/api/remove-icon', async (req, res) => {
@@ -321,14 +328,14 @@ app.get('/api/generate-library', async (req, res) => {
 });
 
 app.get('/api/init', async (req, res) => {
-  let projects;
+  /* let projects;
   let libraries;
 
   await readFiles(path.resolve(__dirname, 'projects'))
       .then(items => projects = items)
       .catch(err => console.log(err));
 
-  await readFiles(path.resolve(__dirname, 'libraries'))
+  await readLibraries(path.resolve(__dirname, 'libraries'))
       .then(items => {
         const librariesLimit = req.query["libraries-limit"] ? req.query["libraries-limit"] : false;
         let librariesJson;
@@ -354,6 +361,38 @@ app.get('/api/init', async (req, res) => {
   return await res.send({
     projects,
     libraries
+  }) */
+
+
+
+
+
+
+
+
+
+
+  
+
+  let projects = [];
+
+  /* const getSettings = async () => fs.readFile(path.resolve(__dirname, 'projects/projects.json'), 'utf-8', async (error, content) => {
+    if (error) return error;
+    return Promise.resolve(JSON.parse(content));
+  }); */
+
+  const getSettings = new Promise((resolve, reject) => {
+    fs.readFile(path.resolve(__dirname, 'projects/projects.json'), 'utf-8', (error, content) => {
+      if (error) return error;
+      return resolve(JSON.parse(content));
+    });
+  });
+
+  const settings = await getSettings;
+  console.log(settings);
+
+  res.send({
+    projects,
   })
 });
 
