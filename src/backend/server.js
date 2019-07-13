@@ -376,24 +376,6 @@ app.get('/api/init', async (req, res) => {
     libraries
   }) */
 
-
-
-
-
-
-
-
-
-
-  
-
-  //let projects = [];
-
-  /* const getSettings = async () => fs.readFile(path.resolve(__dirname, 'projects/projects.json'), 'utf-8', async (error, content) => {
-    if (error) return error;
-    return Promise.resolve(JSON.parse(content));
-  }); */
-
   const getSettings = new Promise((resolve, reject) => {
     fs.readFile(path.resolve(__dirname, 'projects/projects.json'), 'utf-8', (error, content) => {
       if (error) return error;
