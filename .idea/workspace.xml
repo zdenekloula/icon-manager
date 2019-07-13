@@ -200,7 +200,7 @@
     </option>
   </component>
   <component name="PhpDebugGeneral" listening_started="true" />
-  <component name="ProjectFrameBounds" extendedState="1">
+  <component name="ProjectFrameBounds">
     <option name="x" value="-1" />
     <option name="y" value="23" />
     <option name="width" value="1280" />
@@ -299,8 +299,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-1" y="23" width="1280" height="724" extended-state="1" />
-    <editor active="true" />
+    <frame x="-1" y="23" width="1280" height="724" extended-state="0" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26395535" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />

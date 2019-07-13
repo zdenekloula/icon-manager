@@ -98,12 +98,6 @@ function readLibraries(dirname) {
   });
 }
 
-async function asyncForEach(array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
-  }
-}
-
 function readIcons(dirname) {
   return new Promise((resolve, reject) => {
     fs.readdir(dirname, function (err, filenames) {
@@ -123,6 +117,25 @@ function readIcons(dirname) {
           return reject(error);
         });
     });
+  });
+}
+
+function readProjects(projectsFilepaths) {
+  return new Promise((resolve, reject) => {
+    promiseAllP(projectsFilepaths, (filePath, index, resolve, reject) => {
+      fs.readFile(path.resolve(filePath), 'utf-8', function (err, content) {
+        if (err) return reject(err);
+        //const name = filename.split('.').slice(0, -1).join('.');
+        //const outputData = {filename, name, source: content};
+        return resolve(JSON.parse(content));
+      });
+    })
+      .then(result => {
+        return resolve(result);
+      })
+      .catch(error => {
+        return reject(error);
+      });
   });
 }
 
@@ -374,7 +387,7 @@ app.get('/api/init', async (req, res) => {
 
   
 
-  let projects = [];
+  //let projects = [];
 
   /* const getSettings = async () => fs.readFile(path.resolve(__dirname, 'projects/projects.json'), 'utf-8', async (error, content) => {
     if (error) return error;
@@ -389,10 +402,38 @@ app.get('/api/init', async (req, res) => {
   });
 
   const settings = await getSettings;
-  console.log(settings);
 
+  const projectPaths = settings.map(project => {
+    return project.local_path + project.filename
+  });
+
+  const projects = await readProjects(projectPaths);
+
+  const libraries = await readLibraries(path.resolve(__dirname, 'libraries'))
+    .then(items => {
+      const librariesLimit = req.query["libraries-limit"] ? req.query["libraries-limit"] : false;
+      let librariesJson;
+
+      librariesJson = items.map(libraryItem => {
+        if(librariesLimit) {
+          const icons = libraryItem.icons.filter((icon, index) => {
+            if(index < librariesLimit) {
+              return icon
+            }
+          });
+          libraryItem.icons = icons;
+          return libraryItem
+        } else {
+          return libraryItem
+        }
+      });
+      return librariesJson
+  })
+  .catch(err => console.log(err));
+  
   res.send({
     projects,
+    libraries
   })
 });
 
