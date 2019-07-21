@@ -125,9 +125,9 @@ function readProjects(projectsFilepaths) {
     promiseAllP(projectsFilepaths, (filePath, index, resolve, reject) => {
       fs.readFile(path.resolve(filePath), 'utf-8', function (err, content) {
         if (err) return reject(err);
-        //const name = filename.split('.').slice(0, -1).join('.');
-        //const outputData = {filename, name, source: content};
-        return resolve(JSON.parse(content));
+        let projectData = JSON.parse(content);
+        projectData.local_path = filePath;
+        return resolve(projectData);
       });
     })
       .then(result => {
@@ -142,13 +142,15 @@ function readProjects(projectsFilepaths) {
 app.post('/api/append-icon', async (req, res) => {
   // 1. Get data from req (svgSource, projectName)
   const body = req.body;
-  const projectName = body.projectName;
+  console.log(body);
+  const projectPath = body.projectPath;
   const iconData = body.iconData;
 
   // 2. Read all data from json
-  const projectData = await readSingleFile(path.resolve(__dirname, 'projects/' + projectName))
+  const projectData = await readSingleFile(path.resolve(projectPath))
       .then(items => items)
       .catch(err => console.log(err));
+
 
   let newProjectData = projectData;
 
@@ -161,7 +163,7 @@ app.post('/api/append-icon', async (req, res) => {
 
   // 4. Save data to json
   fs.writeFile(
-    path.resolve(path.resolve(__dirname, 'projects/' + projectName)), 
+    path.resolve(path.resolve(projectPath)),
     JSON.stringify(newProjectData), (err) => {
      if (err) console.log('Error writing file:', err)
     }
@@ -170,7 +172,40 @@ app.post('/api/append-icon', async (req, res) => {
   // 5. return req
   return res.send({
     iconData,
-    projectName
+    projectPath
+  })
+});
+
+app.post('/api/append-project', async (req, res) => {
+  // 1. Get data from request
+  const body = req.body;
+  const projectData = body.projectData;
+
+  // 2. Handle icon settings
+  const newProjectFile = {
+    "name": projectData.name,
+    "icons": []
+  };
+
+  await fs.writeFile(path.resolve(projectData.local_path + projectData.filename), JSON.stringify(newProjectFile), (err) => {
+    if (err) console.log('Error writing file:', err)
+  });
+
+  // 3. Handle local settings
+  let settingsData = await readSingleFile('projects/projects.json')
+      .then(fileContent => fileContent)
+      .catch(err => console.log(err));
+
+  settingsData.push(projectData);
+
+  // 4. Save data to local settings file
+  await fs.writeFile(path.resolve(__dirname, 'projects/projects.json'), JSON.stringify(settingsData), (err) => {
+    if (err) console.log('Error writing file:', err)
+  });
+
+  // 5. return req
+  return await res.send({
+    projectData
   })
 });
 
@@ -178,13 +213,13 @@ app.post('/api/upload-icon', async (req, res) => {
   // 1. Get data from req (svgSource, projectName)
   const body = req.body;
   const iconsData = body.icons;
-  const projectName = body.projectName;
-  
+  const projectPath = body.projectPath;
+
   let projectData;
   let failedIcons = [];
 
   // 2. Read all data from json
-  projectData = await readSingleFile(path.resolve(__dirname, 'projects/' + projectName))
+  projectData = await readSingleFile(path.resolve(projectPath))
       .then(items => items)
       .catch(err => console.log(err));
 
@@ -202,7 +237,7 @@ app.post('/api/upload-icon', async (req, res) => {
   }
 
   // 4. Save data to json
-  await fs.writeFile(path.resolve(__dirname, 'projects/' + projectName), JSON.stringify(projectData), (err) => {
+  await fs.writeFile(path.resolve(projectPath), JSON.stringify(projectData), (err) => {
     if (err) console.log('Error writing file:', err)
   });
 
@@ -231,12 +266,12 @@ app.post('/api/generate-sprite', async (req, res) => {
   if (!fs.existsSync(TEMP_FOLDER)){
       await fs.mkdirSync(TEMP_FOLDER);
   }
-  
+
   await projectData.icons.map(icon => {
     svgo.optimize(icon.source).then(({data}) => {
       fs.writeFile(
-        path.resolve(path.resolve(__dirname, TEMP_FOLDER + '/' + icon.filename)), 
-        data, 
+        path.resolve(path.resolve(__dirname, TEMP_FOLDER + '/' + icon.filename)),
+        data,
         (err) => {
           if (err) console.log('Error writing file:', err)
         }
@@ -263,14 +298,14 @@ app.post('/api/generate-sprite', async (req, res) => {
       });
     })
   });
-  
-  // 4. Compile added SVGs into single svg sprite 
+
+  // 4. Compile added SVGs into single svg sprite
 
   // 5. Clear icons
 
   /* fs.readdir(TEMP_FOLDER, (err, files) => {
     if (err) throw err;
-  
+
     for (const file of files) {
       fs.unlink(path.join(TEMP_FOLDER, file), err => {
         if (err) throw err;
@@ -283,14 +318,14 @@ app.post('/api/generate-sprite', async (req, res) => {
 });
 
 app.post('/api/remove-icon', async (req, res) => {
-  // 1. Get data from req (svgSource, projectName)
+  // 1. Get data from req (svgSource, projectPath)
   const body = req.body;
   const iconData = body.iconData;
-  const projectName = body.projectName;
+  const projectPath = body.projectPath;
   const iconName = body.iconData.name;
 
   // 2. Read all data from json
-  const projectData = await readSingleFile(path.resolve(__dirname, 'projects/' + projectName))
+  const projectData = await readSingleFile(path.resolve(projectPath))
       .then(items => items)
       .catch(err => console.log(err));
 
@@ -302,14 +337,14 @@ app.post('/api/remove-icon', async (req, res) => {
   newProjectData.icons.splice(iconIndex, 1);
 
   // 4. Save data to json
-  fs.writeFile(path.resolve(path.resolve(__dirname, 'projects/' + projectName)), JSON.stringify(newProjectData), (err) => {
+  fs.writeFile(path.resolve(path.resolve(projectPath)), JSON.stringify(newProjectData), (err) => {
     if (err) console.log('Error writing file:', err)
   });
 
   // 5. return req
   return res.send({
     iconData,
-    projectName
+    projectName: projectPath
   })
 });
 
@@ -341,40 +376,6 @@ app.get('/api/generate-library', async (req, res) => {
 });
 
 app.get('/api/init', async (req, res) => {
-  /* let projects;
-  let libraries;
-
-  await readFiles(path.resolve(__dirname, 'projects'))
-      .then(items => projects = items)
-      .catch(err => console.log(err));
-
-  await readLibraries(path.resolve(__dirname, 'libraries'))
-      .then(items => {
-        const librariesLimit = req.query["libraries-limit"] ? req.query["libraries-limit"] : false;
-        let librariesJson;
-
-        librariesJson = items.map(libraryItem => {
-          if(librariesLimit) {
-            const icons = libraryItem.icons.filter((icon, index) => {
-              if(index < librariesLimit) {
-                return icon
-              }
-            });
-            libraryItem.icons = icons;
-            return libraryItem
-          } else {
-            return libraryItem
-          }
-        });
-
-        libraries = librariesJson
-      })
-      .catch(err => console.log(err));
-
-  return await res.send({
-    projects,
-    libraries
-  }) */
 
   const getSettings = new Promise((resolve, reject) => {
     fs.readFile(path.resolve(__dirname, 'projects/projects.json'), 'utf-8', (error, content) => {
@@ -412,7 +413,7 @@ app.get('/api/init', async (req, res) => {
       return librariesJson
   })
   .catch(err => console.log(err));
-  
+
   res.send({
     projects,
     libraries

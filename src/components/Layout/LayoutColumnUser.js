@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 
 import { removeExtension, checkIconExists, getIconWithIndex, readTextFileAsync, postData } from '../../utils/helpers'
@@ -8,6 +8,8 @@ import IconBox from "../Icon/IconBox";
 import IconBoxList from "../Icon/IconBoxList";
 import IconBoxItem from "../Icon/IconBoxItem";
 import LayoutColumnHeader from './LayoutColumnHeader';
+
+import useForm from '../../hooks/useForm';
 
 import AppContext from '../../context/AppContext'
 
@@ -49,11 +51,19 @@ const LibraryItem = styled.li`
   }
 `;
 
+const Button = styled.button`
+  display: block;
+  background: #00ff00;
+  color: #fff;
+`;
+
 const LayoutColumnUser = (props) => {
   const { projectsData, activeProject, setActiveProject, updateProjectsData } = useContext(AppContext);
-  const PROJECT_DATA = projectsData[activeProject].icons;
+  // const PROJECT_DATA = projectsData[activeProject].icons;
 
-  const iconBoxClick = (icon) => {
+  const [newProjectData, setNewProjectData] = useForm({});
+
+  const removeIcon = (icon) => {
     let newProjectData = [...projectsData];
     const iconName = icon.name;
     const projectIcons = newProjectData[activeProject].icons;
@@ -73,9 +83,9 @@ const LayoutColumnUser = (props) => {
     //Post data to backend
     postData('/api/remove-icon', JSON.stringify({
       "iconData": icon,
-      "projectName": newProjectData[activeProject].filename
+      "projectPath": newProjectData[activeProject].local_path
     }))
-      .then(res => {
+      .then(() => {
         console.log("Client: Ikona " + iconName + " odebrana.")
       })
       .catch(error => console.error(error));
@@ -83,12 +93,12 @@ const LayoutColumnUser = (props) => {
 
   const generateLibrary = () => {
     console.log("generate library")
-  }
+  };
 
   const appendIcon = async (event) => {
     let newProjectData = [...projectsData];
     let iconsToAppend = [];
-    const inputFiles = event.target.files; 
+    const inputFiles = event.target.files;
     const projectIcons = newProjectData[activeProject].icons;
 
     if(inputFiles.length > 0) {
@@ -101,7 +111,7 @@ const LayoutColumnUser = (props) => {
           "filename": "",
           "name": "",
           "source": ""
-        }
+        };
         icon.filename = filename;
         icon.name = name;
         icon.source = await readTextFileAsync(files);
@@ -124,17 +134,59 @@ const LayoutColumnUser = (props) => {
 
     postData('/api/upload-icon', JSON.stringify({
       "icons": iconsToAppend,
-      "projectName": newProjectData[activeProject].filename
+      "projectPath": newProjectData[activeProject].local_path
     }))
       .then(() => console.log("Ikony pridany."))
       .catch(error => console.error(error));
+  };
 
-  }
+  const appendProject = () => {
+    // Update context object
+    const dataForNewProjectContext = {
+      ...newProjectData,
+      icons: [],
+      local_path: newProjectData.local_path + newProjectData.filename + ".json"
+    };
+
+    const dataForNewProjectSettings = {
+      ...newProjectData,
+      filename: newProjectData.filename + ".json"
+    };
+
+    const updatedProjects = [
+        ...projectsData,
+        dataForNewProjectContext
+    ];
+
+    updateProjectsData(updatedProjects);
+
+    // Update local settings
+
+    //Post data to backend
+    postData('/api/append-project', JSON.stringify({
+      "projectData": dataForNewProjectSettings,
+    }))
+      .then(() => {
+        console.log("Client: Project " + newProjectData.name + " vytvoren.")
+      })
+      .catch(error => console.error(error));
+  };
 
   return (
       <div>
         <LayoutColumnHeader columnProjects>
-          <Heading element="h2" type="heading1">Your projects</Heading>
+          <div>
+            <Heading element="h2" type="heading1">Your projects</Heading>
+
+            <br/>
+            <input type="text" name="name" placeholder="Project name" onChange={setNewProjectData} />
+            <input type="text" name="local_path" placeholder="Path to project" onChange={setNewProjectData} /> <br/>
+            <input type="text" name="filename" placeholder="Filename" onChange={setNewProjectData} />.json
+            <span>{newProjectData && newProjectData.name}</span>
+
+            <Button onClick={() => appendProject("test", "another")}>Add project</Button>
+
+          </div>
 
           <LibraryList>
             {projectsData.map((item, index) => (
@@ -147,10 +199,11 @@ const LayoutColumnUser = (props) => {
         </LayoutColumnHeader>
 
         <IconBoxList>
-          {PROJECT_DATA.map((icon, index) => {
+          {
+            projectsData[activeProject].icons.map((icon, index) => {
             return(
               <IconBoxItem key={index}>
-                <IconBox data={icon} onClick={() => iconBoxClick(icon)} />
+                <IconBox data={icon} onClick={() => removeIcon(icon)} />
               </IconBoxItem>
             )
           })}

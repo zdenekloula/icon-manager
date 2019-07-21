@@ -69,7 +69,7 @@ const IconGrid = (props) => {
     if (!checkIconExists(iconName, projectIcons)) {
       postData('/api/append-icon', JSON.stringify({
         "iconData": icon,
-        "projectName": newProjectData[activeProject].filename
+        "projectPath": newProjectData[activeProject].local_path
       }))
         .then(() => console.log("Ikona " + iconName + " pridana."))
         .catch(error => console.error(error));
@@ -84,11 +84,11 @@ const IconGrid = (props) => {
 
       postData('/api/append-icon', JSON.stringify({
         "iconData": newIcon,
-        "projectName": newProjectData[activeProject].filename
+        "projectPath": newProjectData[activeProject].local_path
       }))
         .then(() => console.log("Ikona " + iconName + " pridana."))
         .catch(error => console.error(error));
-  
+
       newProjectData[activeProject].icons = [...projectsData[activeProject].icons, newIcon];
 
       // React context update
