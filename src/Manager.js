@@ -70,7 +70,7 @@ function Manager(props) {
 
   const setLibrary = (index) => {
     setActiveLibrary(index);
-  }
+  };
 
   return (
       <Layout>

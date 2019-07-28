@@ -8,8 +8,10 @@ import IconBox from "../Icon/IconBox";
 import IconBoxList from "../Icon/IconBoxList";
 import IconBoxItem from "../Icon/IconBoxItem";
 import LayoutColumnHeader from './LayoutColumnHeader';
+import Modal from '../../components/Modal';
 
 import useForm from '../../hooks/useForm';
+import usePortal from '../../hooks/useModal';
 
 import AppContext from '../../context/AppContext'
 
@@ -172,11 +174,28 @@ const LayoutColumnUser = (props) => {
       .catch(error => console.error(error));
   };
 
+  const {
+    openPortal: openFirstPortal,
+    closePortal: closeFirstPortal,
+    isOpen: isFirstPortalOpened,
+    Portal: FirstPortal,
+    togglePortal: toggleFirstPortal,
+  } = usePortal();
+
   return (
       <div>
         <LayoutColumnHeader columnProjects>
           <div>
             <Heading element="h2" type="heading1">Your projects</Heading>
+
+            <button onClick={toggleFirstPortal}>Open Modal</button>
+            { isFirstPortalOpened &&
+              <FirstPortal>
+                <Modal closeModal={closeFirstPortal}>
+                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur dolorem doloribus, eligendi ipsam itaque iure iusto libero, magnam, neque nisi officia optio pariatur provident quis quod quos reiciendis voluptas voluptate!</p>
+                </Modal>
+              </FirstPortal>
+            }
 
             <br/>
             <input type="text" name="name" placeholder="Project name" onChange={setNewProjectData} />
