@@ -183,6 +183,7 @@ app.post('/api/append-project', async (req, res) => {
 
   // 2. Handle icon settings
   const newProjectFile = {
+    "id": projectData.id,
     "name": projectData.name,
     "icons": []
   };
@@ -200,6 +201,36 @@ app.post('/api/append-project', async (req, res) => {
 
   // 4. Save data to local settings file
   await fs.writeFile(path.resolve(__dirname, 'projects/projects.json'), JSON.stringify(settingsData), (err) => {
+    if (err) console.log('Error writing file:', err)
+  });
+
+  // 5. return req
+  return await res.send({
+    projectData
+  })
+});
+
+app.post('/api/remove-project', async (req, res) => {
+  // 1. Get data from request
+  const body = req.body;
+  const projectData = body.projectData;
+
+  // 2. Remove file from filesystem based on localpath from request
+  await fs.unlink(path.resolve(projectData.local_path), (err) => {
+    if (err) throw err;
+    console.log(projectData.name + ' was deleted');
+  });
+
+  // 3. get and update settings file
+  const settingsData = await readSingleFile('projects/projects.json')
+      .then(fileContent => fileContent);
+
+  const newSettingsData = settingsData.filter(projectSettings => {
+    return projectData.id !== projectSettings.id
+  });
+
+  // 4. Save data to local settings file
+  await fs.writeFile(path.resolve(__dirname, 'projects/projects.json'), JSON.stringify(newSettingsData), (err) => {
     if (err) console.log('Error writing file:', err)
   });
 

@@ -11,14 +11,12 @@ function Manager(props) {
   const columnsHandleEl = useRef(null);
   const columnsWrapperEl = useRef(null);
   const [activeLibrary, setActiveLibrary] = useState(0);
-  const [activeProject, setActiveProject] = useState(0);
+  const [activeProject] = useState(0);
   const [columnsHandleIsDragging, setColumnsHandleIsDragging] = useState(false);
   const [columnsSizes, setColumnsSizes] = useState({
     left: 100 - settings.userColumnSize,
     right: settings.userColumnSize,
   });
-
-
 
   useEffect(() => {
     document.addEventListener('mousedown', (event) => {

@@ -8,7 +8,7 @@ const ELEMENTS = {
   H3: 'h3',
   H4: 'h4',
   H5: 'h5'
-}
+};
 
 const TYPES = {
   HEADING1: "heading1",
@@ -16,7 +16,7 @@ const TYPES = {
   HEADING3: "heading3",
   HEADING4: "heading4",
   HEADING5: "heading5",
-}
+};
 
 const getHeading = name => ({type, theme}) =>  {
   const settings = {

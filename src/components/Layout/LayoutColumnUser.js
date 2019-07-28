@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 
-import { removeExtension, checkIconExists, getIconWithIndex, readTextFileAsync, postData } from '../../utils/helpers'
+import { removeExtension, checkIconExists, getIconWithIndex, readTextFileAsync, postData, guidGenerator } from '../../utils/helpers'
 
 import Heading from '../Heading';
 import IconBox from "../Icon/IconBox";
@@ -14,6 +14,8 @@ import useForm from '../../hooks/useForm';
 import usePortal from '../../hooks/useModal';
 
 import AppContext from '../../context/AppContext'
+import ExpansionPanelList from "../ExpansionPanel/ExpansionPanelList";
+import ExpansionPanelItem from "../ExpansionPanel/ExpansionPanelItem";
 
 const LibraryList = styled.ul`
   display: flex;
@@ -55,11 +57,11 @@ const LibraryItem = styled.li`
 
 const Button = styled.button`
   display: block;
-  background: #00ff00;
+  background: #ff0000;
   color: #fff;
 `;
 
-const LayoutColumnUser = (props) => {
+const LayoutColumnUser = () => {
   const { projectsData, activeProject, setActiveProject, updateProjectsData } = useContext(AppContext);
   // const PROJECT_DATA = projectsData[activeProject].icons;
 
@@ -143,16 +145,19 @@ const LayoutColumnUser = (props) => {
   };
 
   const appendProject = () => {
+    const generatedId = guidGenerator();
     // Update context object
     const dataForNewProjectContext = {
       ...newProjectData,
+      id: generatedId,
       icons: [],
       local_path: newProjectData.local_path + newProjectData.filename + ".json"
     };
 
     const dataForNewProjectSettings = {
       ...newProjectData,
-      filename: newProjectData.filename + ".json"
+      id: generatedId,
+      filename: newProjectData.filename + ".json",
     };
 
     const updatedProjects = [
@@ -174,8 +179,34 @@ const LayoutColumnUser = (props) => {
       .catch(error => console.error(error));
   };
 
+  const deleteProject = (projectId) => {
+
+    setActiveProject(activeProject !== 0 ? activeProject - 1 : 0);
+
+    let newProjectData = [...projectsData].filter(project => {
+      return projectId !== project.id
+    });
+
+    updateProjectsData(newProjectData);
+
+    // Update local settings
+
+    let requiredProjectDataForBackend = [...projectsData].find(project => {
+      return projectId === project.id
+    });
+
+    //Post data to backend
+    postData('/api/remove-project', JSON.stringify({
+      "projectData": requiredProjectDataForBackend,
+    }))
+        .then(() => {
+          console.log("Client: Project " + requiredProjectDataForBackend.name + " vytvoren.")
+        })
+        .catch(error => console.error(error));
+  };
+
   const {
-    openPortal: openFirstPortal,
+    // openPortal: openFirstPortal,
     closePortal: closeFirstPortal,
     isOpen: isFirstPortalOpened,
     Portal: FirstPortal,
@@ -192,18 +223,43 @@ const LayoutColumnUser = (props) => {
             { isFirstPortalOpened &&
               <FirstPortal>
                 <Modal closeModal={closeFirstPortal}>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aspernatur dolorem doloribus, eligendi ipsam itaque iure iusto libero, magnam, neque nisi officia optio pariatur provident quis quod quos reiciendis voluptas voluptate!</p>
+
+                  <Heading type="heading2">Add new project</Heading>
+
+                  <input type="text" name="name" placeholder="Project name" onChange={setNewProjectData} />
+                  <input type="text" name="local_path" placeholder="Path to project" onChange={setNewProjectData} /> <br/>
+                  <input type="text" name="filename" placeholder="Filename" onChange={setNewProjectData} />.json
+                  <span>{newProjectData && newProjectData.name}</span>
+
+                  <Button onClick={() => appendProject()}>Add project</Button>
+
+
+                  <br/>
+                  <Heading type="heading2">Project managment</Heading>
+                  <ExpansionPanelList>
+                    {projectsData.map((item, index) => (
+                        <ExpansionPanelItem title={item.name} key={item.id}>
+                          {/*<LibraryLink href="#" onClick={() => setActiveProject(index)} isActive={index === activeProject}>{item.name}</LibraryLink>*/}
+
+                          {/*<input type="text"/>
+
+                          <input type="text" name="" placeholder="Project name" value={item.name} />
+
+                          <input type="text" name="" placeholder="Path to project" value={item.local_path} />
+
+                          <input type="text" name="" placeholder="Filename" onChange={setNewProjectData} value={item.filename} />.json
+
+                          <Button onClick={() => {}}>Save settings</Button>*/}
+                          <Button onClick={() => deleteProject(item.id)}>Delete Project</Button>
+
+
+                        </ExpansionPanelItem>
+                    ))}
+                  </ExpansionPanelList>
+
                 </Modal>
               </FirstPortal>
             }
-
-            <br/>
-            <input type="text" name="name" placeholder="Project name" onChange={setNewProjectData} />
-            <input type="text" name="local_path" placeholder="Path to project" onChange={setNewProjectData} /> <br/>
-            <input type="text" name="filename" placeholder="Filename" onChange={setNewProjectData} />.json
-            <span>{newProjectData && newProjectData.name}</span>
-
-            <Button onClick={() => appendProject("test", "another")}>Add project</Button>
 
           </div>
 

@@ -9,7 +9,10 @@ function usePortal() {
     return document.body;
   }, []);
 
-  const openPortal = useCallback(() => {
+  const openPortal = useCallback((e) => {
+    if (e == null) return setTimeout(() => makeOpen(true), 0);
+    if (e && e.nativeEvent) e.nativeEvent.stopImmediatePropagation();
+
     makeOpen(true)
   }, [makeOpen]);
 
@@ -20,6 +23,11 @@ function usePortal() {
   const closePortal = useCallback(() => {
     if (isOpen) makeOpen(false);
   }, [isOpen, makeOpen]);
+
+  const handleKeydown = useCallback(e => {
+    var ESC = 27;
+    if (e.keyCode === ESC) makeOpen(false);
+  }, [makeOpen]);
 
   const handleOutsideMouseClick = useCallback(({target}) => {
     if (!(portal.current instanceof HTMLElement)) {
@@ -34,19 +42,21 @@ function usePortal() {
   useEffect(() => {
     const node = portal.current;
     elToMountTo.appendChild(portal.current);
+    document.addEventListener('keydown', handleKeydown);
     document.addEventListener('click', handleOutsideMouseClick);
     return () => {
-      elToMountTo.removeChild(node);
+      document.removeEventListener('keydown', handleKeydown);
       document.removeEventListener('click', handleOutsideMouseClick);
+      elToMountTo.removeChild(node);
     };
-  }, [handleOutsideMouseClick]);
+  }, [elToMountTo, handleOutsideMouseClick, handleKeydown]);
 
-  const Portal = (({children}) => {
+  const Portal = useCallback(({children}) => {
     if (portal.current instanceof HTMLElement) {
       return createPortal(children, portal.current);
     }
     return null
-  });
+  }, []);
 
   return {
     openPortal,

@@ -6,13 +6,16 @@ import Manager from './Manager';
 const light = {
   "THEME_NAME": "light",
   "primary": "#457BF4",
+  "primaryFontColor": "#fff",
   "backgroundPrimary": "#F8F8F8",
   "backgroundSecondary": "#fff",
   "backgroundTertiary": "#f2f2f2",
+  "backgroundDark": "#ccc",
   "handleColor": "#E5E5E5",
   "borderColor": "rgba(0, 0, 0, 0.1)",
   "scrollbarBg": "rgba(0, 0, 0, 0.4)",
   "fontColor": "#000",
+  "modalBackground": "#fff",
   "columnHeaderHeight": 60,
   "heading": {
     "weight": {
@@ -30,18 +33,21 @@ const light = {
       "heading5": 16,
     }
   }
-}
+};
 
 const dark = {
   "THEME_NAME": "dark",
   "primary": "#457BF4",
+  "primaryFontColor": "#fff",
   "backgroundPrimary": "#14141C",
   "backgroundSecondary": "#1C1C28",
   "backgroundTertiary": "#242633",
+  "backgroundDark": "#1b1c27",
   "handleColor": "#30303F",
   "borderColor": "rgba(255, 255, 255, 0.1)",
   "scrollbarBg": "rgba(255, 255, 255, 0.4)",
   "fontColor": "#fff",
+  "modalBackground": "#242633",
   "columnHeaderHeight": 60,
   "heading": {
     "weight": {
@@ -59,7 +65,7 @@ const dark = {
       "heading5": 16,
     }
   }
-}
+};
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -68,7 +74,7 @@ function App() {
 
   const [librariesData, setLibrariesData] = useState(null);
   const [activeLibrary, setActiveLibrary] = useState(0);
-  
+
   const [projectsData, setProjectsData] = useState(null);
   const [activeProject, setActiveProject] = useState(0);
 
@@ -97,12 +103,12 @@ function App() {
 
   return (
     <AppProvider value={{
-        theme, 
-        switchTheme, 
+        theme,
+        switchTheme,
 
-        librariesData, 
-        updateLibrariesData, 
-        activeLibrary, 
+        librariesData,
+        updateLibrariesData,
+        activeLibrary,
         setActiveLibrary,
 
         projectsData,
