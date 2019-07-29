@@ -241,8 +241,6 @@ const LayoutColumnUser = () => {
           console.log("Client: Project aktualizovan.")
         })
         .catch(error => console.error(error));
-
-
   };
 
   const {

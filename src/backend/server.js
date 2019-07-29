@@ -255,6 +255,9 @@ app.post('/api/update-project', async (req, res) => {
   });
 
 
+  //TODO: Handle file rename and location change based on file inputs from user
+
+
   // Create project file in directory
 
   return await res.send({
