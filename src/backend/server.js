@@ -185,9 +185,11 @@ app.post('/api/append-project', async (req, res) => {
   const newProjectFile = {
     "id": projectData.id,
     "name": projectData.name,
+    "filename": projectData.filename,
     "icons": []
   };
 
+  // Create project file in directory
   await fs.writeFile(path.resolve(projectData.local_path + projectData.filename), JSON.stringify(newProjectFile), (err) => {
     if (err) console.log('Error writing file:', err)
   });
@@ -205,6 +207,56 @@ app.post('/api/append-project', async (req, res) => {
   });
 
   // 5. return req
+  return await res.send({
+    projectData
+  })
+});
+
+app.post('/api/update-project', async (req, res) => {
+  // 1. Get data from request
+  const body = req.body;
+  const projectData = body.projectData;
+
+  // 2. Read settings file
+  let settingsData = await readSingleFile('projects/projects.json')
+      .then(fileContent => fileContent)
+      .catch(err => console.log(err));
+
+  const projectSettingsIndex = await settingsData.findIndex(projectSettings => projectData.id === projectSettings.id);
+  const projectSettingsLocalPath = settingsData[projectSettingsIndex].local_path;
+  const projectSettingsFileName = settingsData[projectSettingsIndex].filename;
+
+  // 3. Read project file
+  let oldProjectData = await readSingleFile(path.resolve(projectSettingsLocalPath + projectSettingsFileName))
+      .then(projectContent => projectContent)
+      .catch(err => console.log(err));
+
+  // 4. Update settings file
+  settingsData[projectSettingsIndex] = {
+    ...settingsData[projectSettingsIndex],
+    ...(projectData.name && {"name": projectData.name}),
+    ...(projectData.filename && {"filename": projectData.filename}),
+    ...(projectData.local_path && {"local_path": projectData.local_path})
+  };
+
+  await fs.writeFile(path.resolve(__dirname, 'projects/projects.json'), JSON.stringify(settingsData), (err) => {
+    if (err) console.log('Error writing file:', err)
+  });
+
+  // 4. Update project file
+  const newProjectData = {
+    ...oldProjectData,
+    ...(projectData.name && {"name": projectData.name}),
+    ...(projectData.filename && {"filename": projectData.filename})
+  };
+
+  fs.writeFile(path.resolve(path.resolve(projectSettingsLocalPath + projectSettingsFileName)), JSON.stringify(newProjectData), (err) => {
+      if (err) console.log('Error writing file:', err)
+  });
+
+
+  // Create project file in directory
+
   return await res.send({
     projectData
   })

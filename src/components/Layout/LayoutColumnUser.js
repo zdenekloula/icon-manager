@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 
 import { removeExtension, checkIconExists, getIconWithIndex, readTextFileAsync, postData, guidGenerator } from '../../utils/helpers'
@@ -66,6 +66,27 @@ const LayoutColumnUser = () => {
   // const PROJECT_DATA = projectsData[activeProject].icons;
 
   const [newProjectData, setNewProjectData] = useForm({});
+  // const [updatedProjectData, updateProjectData] = useForm({});
+
+  const [updatedProjectData, updateProjectData] = useState({});
+
+  const handleProjectDataUpdate = (event, key) => {
+    event.persist();
+    console.log(event);
+    console.log(key);
+    console.log(updatedProjectData);
+    updateProjectData(updatedProjectData => {
+      const newData = {
+        ...updatedProjectData,
+        [key]: {
+          ...updatedProjectData[key],
+          [event.target.name]: event.target.value
+        }
+      }
+      return newData;
+    });
+    console.log(updatedProjectData);
+  };
 
   const removeIcon = (icon) => {
     let newProjectData = [...projectsData];
@@ -205,6 +226,25 @@ const LayoutColumnUser = () => {
         .catch(error => console.error(error));
   };
 
+  const updateProject = (projectId) => {
+    //Do validation here
+
+    const dataForUpdate = {
+      ...updatedProjectData[projectId],
+      id: projectId
+    };
+
+    postData('/api/update-project', JSON.stringify({
+      "projectData": dataForUpdate,
+    }))
+        .then(() => {
+          console.log("Client: Project aktualizovan.")
+        })
+        .catch(error => console.error(error));
+
+
+  };
+
   const {
     // openPortal: openFirstPortal,
     closePortal: closeFirstPortal,
@@ -241,15 +281,16 @@ const LayoutColumnUser = () => {
                         <ExpansionPanelItem title={item.name} key={item.id}>
                           {/*<LibraryLink href="#" onClick={() => setActiveProject(index)} isActive={index === activeProject}>{item.name}</LibraryLink>*/}
 
-                          {/*<input type="text"/>
+                          <span>New Name:</span><span>{updatedProjectData[item.id] && updatedProjectData[item.id].name}</span>
+                          <br/>
 
-                          <input type="text" name="" placeholder="Project name" value={item.name} />
+                          <input type="text" name="name" placeholder="Project name" defaultValue={item.name} onChange={(event) => handleProjectDataUpdate(event, item.id)}/>
 
-                          <input type="text" name="" placeholder="Path to project" value={item.local_path} />
+                          {/*<input type="text" name="" placeholder="Path to project" value={item.local_path} />*/}
 
-                          <input type="text" name="" placeholder="Filename" onChange={setNewProjectData} value={item.filename} />.json
+                          {/*<input type="text" name="" placeholder="Filename" onChange={setNewProjectData} value={item.filename} />.json*/}
 
-                          <Button onClick={() => {}}>Save settings</Button>*/}
+                          <Button onClick={() => updateProject(item.id)}>Save settings</Button>
                           <Button onClick={() => deleteProject(item.id)}>Delete Project</Button>
 
 

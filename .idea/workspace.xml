@@ -3,18 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="baeb749b-31f1-4eca-ad5c-92c70cb9d66a" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Manager.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/Manager.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/backend/projects/projects.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/projects/projects.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/backend/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Heading.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Heading.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/components/Layout/LayoutColumnUser.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Layout/LayoutColumnUser.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Modal.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Modal.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/hooks/useModal.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/hooks/useModal.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/utils/helpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/helpers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testslozka/newproject.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/testslozka/nzip.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/testslozka/starfos.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/testslozka/nzip.json" beforeDir="false" afterPath="$PROJECT_DIR$/testslozka/nzip.json" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,32 +17,30 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/backend/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="412">
-              <caret line="234" column="5" selection-start-line="234" selection-start-column="5" selection-end-line="234" selection-end-column="5" />
+            <state relative-caret-position="639">
+              <caret line="249" column="67" selection-start-line="249" selection-start-column="67" selection-end-line="249" selection-end-column="67" />
               <folding>
                 <element signature="n#!!block;n#readLibraries#0" />
                 <element signature="n#!!block;n#readIcons#0" />
-                <element signature="n#!!block;n#readProjects#0" />
-                <element signature="e#3687#4513#0" />
-                <element signature="e#4569#5454#0" />
+                <element signature="e#4569#5480#0" />
+                <element signature="e#5536#6408#0" />
+                <element signature="e#6461#7489#0" />
+                <element signature="e#7546#9495#0" />
+                <element signature="e#10456#11108#0" />
+                <element signature="e#11153#12309#0" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/components/Layout/LayoutColumnUser.js">
+        <entry file="file://$PROJECT_DIR$/testslozka/sad.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="463">
-              <caret line="185" column="4" lean-forward="true" selection-start-line="185" selection-start-column="4" selection-end-line="187" selection-end-column="7" />
-              <folding>
-                <element signature="e#0#42#0" expanded="true" />
-                <element signature="e#2749#2790#0" />
-                <element signature="e#2831#4165#0" />
-              </folding>
+            <state relative-caret-position="26">
+              <caret line="1" column="40" selection-start-line="1" selection-start-column="40" selection-end-line="1" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -57,8 +48,32 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/backend/projects/projects.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="78">
-              <caret column="335" selection-start-column="335" selection-end-column="335" />
+            <state relative-caret-position="286">
+              <caret line="11" column="42" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="42" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testslozka/nzip.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="130">
+              <caret line="5" column="5" lean-forward="true" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/components/Layout/LayoutColumnUser.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="352">
+              <caret line="236" column="25" selection-start-line="236" selection-start-column="25" selection-end-line="236" selection-end-column="25" />
+              <folding>
+                <element signature="e#0#42#0" expanded="true" />
+                <element signature="e#1891#2856#0" />
+                <element signature="e#2891#2932#0" />
+                <element signature="e#2973#4307#0" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -66,8 +81,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/hooks/useForm.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="156">
-              <caret line="6" selection-start-line="6" selection-end-line="6" />
+            <state relative-caret-position="182">
+              <caret line="7" column="25" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -76,7 +91,7 @@
         <entry file="file://$PROJECT_DIR$/src/components/Modal.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="312">
-              <caret line="53" column="23" lean-forward="true" selection-start-line="53" selection-start-column="23" selection-end-line="53" selection-end-column="23" />
+              <caret line="53" column="23" selection-start-line="53" selection-start-column="23" selection-end-line="53" selection-end-column="23" />
               <folding>
                 <element signature="e#0#25#0" expanded="true" />
               </folding>
@@ -89,9 +104,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="596">
               <caret line="52" column="55" selection-start-line="52" selection-start-column="55" selection-end-line="52" selection-end-column="55" />
-              <folding>
-                <element signature="e#0#25#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -99,8 +111,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/App.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="312">
-              <caret line="12" column="17" selection-start-line="12" selection-start-column="3" selection-end-line="12" selection-end-column="17" />
+            <state relative-caret-position="390">
+              <caret line="15" column="27" lean-forward="true" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
               <folding>
                 <element signature="e#0#50#0" expanded="true" />
               </folding>
@@ -109,19 +121,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/utils/helpers.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="860">
-              <caret line="66" column="2" lean-forward="true" selection-start-line="66" selection-start-column="2" selection-end-line="66" selection-end-column="2" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/hooks/useModal.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1581">
-              <caret line="67" lean-forward="true" selection-start-line="67" selection-end-line="67" />
+            <state relative-caret-position="859">
+              <caret line="67" selection-start-line="67" selection-end-line="67" />
               <folding>
                 <element signature="e#0#74#0" expanded="true" />
               </folding>
@@ -133,9 +136,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>columnsWrapperEl</find>
-      <find>columnsHandleEl</find>
-      <find>Layout</find>
       <find>Library</find>
       <find>IconBox</find>
       <find>IconBoxList</find>
@@ -160,6 +160,12 @@
       <find>#242633</find>
       <find>StyledExpansionPanelItem</find>
       <find>setNewProjectData</find>
+      <find>readProjects</find>
+      <find>removeExtension</find>
+      <find>ge</find>
+      <find>init</find>
+      <find>append</find>
+      <find>findIndex</find>
     </findStrings>
     <replaceStrings>
       <replace>LayoutResizeableColumns</replace>
@@ -196,7 +202,6 @@
         <option value="$PROJECT_DIR$/src/components/Icon/IconBox.js" />
         <option value="$PROJECT_DIR$/src/components/Layout/LayoutLibraryIconList.js" />
         <option value="$PROJECT_DIR$/testslozka/dalsiprojekt.json" />
-        <option value="$PROJECT_DIR$/testslozka/nzip.json" />
         <option value="$PROJECT_DIR$/src/Manager.js" />
         <option value="$PROJECT_DIR$/src/components/Heading.js" />
         <option value="$PROJECT_DIR$/src/components/Modal.js" />
@@ -204,11 +209,14 @@
         <option value="$PROJECT_DIR$/src/App.js" />
         <option value="$PROJECT_DIR$/src/components/ExpansionPanel/ExpansionPanelItem.js" />
         <option value="$PROJECT_DIR$/src/hooks/useForm.js" />
-        <option value="$PROJECT_DIR$/src/utils/helpers.js" />
-        <option value="$PROJECT_DIR$/src/backend/projects/projects.json" />
         <option value="$PROJECT_DIR$/src/hooks/useModal.js" />
-        <option value="$PROJECT_DIR$/src/components/Layout/LayoutColumnUser.js" />
+        <option value="$PROJECT_DIR$/src/utils/helpers.js" />
+        <option value="$PROJECT_DIR$/testslozka/test.json" />
+        <option value="$PROJECT_DIR$/testslozka/nzip.json" />
+        <option value="$PROJECT_DIR$/src/backend/projects/projects.json" />
+        <option value="$PROJECT_DIR$/testslozka/sad.json" />
         <option value="$PROJECT_DIR$/src/backend/server.js" />
+        <option value="$PROJECT_DIR$/src/components/Layout/LayoutColumnUser.js" />
       </list>
     </option>
   </component>
@@ -216,7 +224,7 @@
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="y" value="23" />
     <option name="width" value="1920" />
-    <option name="height" value="1107" />
+    <option name="height" value="1106" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
@@ -287,7 +295,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/components/ExpansionPanel" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/testslozka" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
@@ -297,14 +305,15 @@
     <property name="settings.editor.selected.configurable" value="MTConfigurable" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/testslozka" />
+      <recent name="$PROJECT_DIR$/src/components/ExpansionPanel" />
+      <recent name="$PROJECT_DIR$/src/backend/projects" />
+      <recent name="$PROJECT_DIR$/src/components/Layout" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/src/components/ExpansionPanel" />
       <recent name="$PROJECT_DIR$/src/components" />
-      <recent name="$PROJECT_DIR$/src/components/Layout" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/src/components/ExpansionPanel" />
-      <recent name="$PROJECT_DIR$/src/backend/projects" />
       <recent name="$PROJECT_DIR$/src/components/Layout" />
     </key>
   </component>
@@ -331,7 +340,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1" y="23" width="1920" height="1107" extended-state="6" />
+    <frame x="-3" y="23" width="1920" height="1106" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26293558" />
@@ -361,7 +370,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/src/components/Modal.js</url>
           <line>73</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="1" />
         </line-breakpoint>
       </breakpoints>
@@ -520,11 +528,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/testslozka/sad.json" />
-    <entry file="file://$PROJECT_DIR$/testslozka/test.json" />
-    <entry file="file://$PROJECT_DIR$/testslozka/starfos.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/testslozka/starfos.json" />
     <entry file="file://$PROJECT_DIR$/testslozka/testprojekt.json" />
     <entry file="file://$PROJECT_DIR$/testslozka/dalsiprojekt.json" />
     <entry file="file://$PROJECT_DIR$/src/components/Layout/LayoutLibraryIconList.js">
@@ -595,26 +599,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Modal.js">
+    <entry file="file://$PROJECT_DIR$/src/backend/undefinedundefined.json" />
+    <entry file="file://$PROJECT_DIR$/testslozka/testproject.json" />
+    <entry file="file://$PROJECT_DIR$/src/utils/helpers.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="53" column="23" lean-forward="true" selection-start-line="53" selection-start-column="23" selection-end-line="53" selection-end-column="23" />
-          <folding>
-            <element signature="e#0#25#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="78">
+          <caret line="3" column="21" lean-forward="true" selection-start-line="3" selection-start-column="21" selection-end-line="3" selection-end-column="21" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/backend/undefinedundefined.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/testslozka/testproject.json">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/hooks/useForm.js">
+    <entry file="file://$PROJECT_DIR$/src/App.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="156">
-          <caret line="6" selection-start-line="6" selection-end-line="6" />
+        <state relative-caret-position="390">
+          <caret line="15" column="27" lean-forward="true" selection-start-line="15" selection-start-column="27" selection-end-line="15" selection-end-column="27" />
+          <folding>
+            <element signature="e#0#50#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -622,75 +622,90 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="596">
           <caret line="52" column="55" selection-start-line="52" selection-start-column="55" selection-end-line="52" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Modal.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="53" column="23" selection-start-line="53" selection-start-column="23" selection-end-line="53" selection-end-column="23" />
           <folding>
             <element signature="e#0#25#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/App.js">
+    <entry file="file://$PROJECT_DIR$/testslozka/test.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="312">
-          <caret line="12" column="17" selection-start-line="12" selection-start-column="3" selection-end-line="12" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#50#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="26">
+          <caret line="1" column="34" selection-start-line="1" selection-start-column="34" selection-end-line="1" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/hooks/useForm.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="182">
+          <caret line="7" column="25" selection-start-line="7" selection-start-column="24" selection-end-line="7" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/testslozka/nzip.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret column="1024" selection-start-column="1024" selection-end-column="1024" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/utils/helpers.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="860">
-          <caret line="66" column="2" lean-forward="true" selection-start-line="66" selection-start-column="2" selection-end-line="66" selection-end-column="2" />
+        <state relative-caret-position="130">
+          <caret line="5" column="5" lean-forward="true" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/hooks/useModal.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1581">
-          <caret line="67" lean-forward="true" selection-start-line="67" selection-end-line="67" />
+        <state relative-caret-position="859">
+          <caret line="67" selection-start-line="67" selection-end-line="67" />
           <folding>
             <element signature="e#0#74#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/backend/projects/projects.json">
+    <entry file="file://$PROJECT_DIR$/testslozka/sad.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret column="335" selection-start-column="335" selection-end-column="335" />
+        <state relative-caret-position="26">
+          <caret line="1" column="40" selection-start-line="1" selection-start-column="40" selection-end-line="1" selection-end-column="40" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/components/Layout/LayoutColumnUser.js">
+    <entry file="file://$PROJECT_DIR$/src/backend/projects/projects.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="463">
-          <caret line="185" column="4" lean-forward="true" selection-start-line="185" selection-start-column="4" selection-end-line="187" selection-end-column="7" />
-          <folding>
-            <element signature="e#0#42#0" expanded="true" />
-            <element signature="e#2749#2790#0" />
-            <element signature="e#2831#4165#0" />
-          </folding>
+        <state relative-caret-position="286">
+          <caret line="11" column="42" selection-start-line="11" selection-start-column="11" selection-end-line="11" selection-end-column="42" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/backend/server.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="412">
-          <caret line="234" column="5" selection-start-line="234" selection-start-column="5" selection-end-line="234" selection-end-column="5" />
+        <state relative-caret-position="639">
+          <caret line="249" column="67" selection-start-line="249" selection-start-column="67" selection-end-line="249" selection-end-column="67" />
           <folding>
             <element signature="n#!!block;n#readLibraries#0" />
             <element signature="n#!!block;n#readIcons#0" />
-            <element signature="n#!!block;n#readProjects#0" />
-            <element signature="e#3687#4513#0" />
-            <element signature="e#4569#5454#0" />
+            <element signature="e#4569#5480#0" />
+            <element signature="e#5536#6408#0" />
+            <element signature="e#6461#7489#0" />
+            <element signature="e#7546#9495#0" />
+            <element signature="e#10456#11108#0" />
+            <element signature="e#11153#12309#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/components/Layout/LayoutColumnUser.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="352">
+          <caret line="236" column="25" selection-start-line="236" selection-start-column="25" selection-end-line="236" selection-end-column="25" />
+          <folding>
+            <element signature="e#0#42#0" expanded="true" />
+            <element signature="e#1891#2856#0" />
+            <element signature="e#2891#2932#0" />
+            <element signature="e#2973#4307#0" />
           </folding>
         </state>
       </provider>

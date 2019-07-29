@@ -1,4 +1,4 @@
-export const removeExtension = (name) => name.split('.').slice(0, -1).join('.');
+export const removeExtension = (name) => name.replace(/\.[^/.]+$/, "");
 
 export const checkIconExists = (iconName, icons) => {
   let exists = false;
