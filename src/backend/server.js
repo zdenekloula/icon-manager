@@ -217,12 +217,15 @@ app.post('/api/update-project', async (req, res) => {
   const body = req.body;
   const projectData = body.projectData;
 
+  let isProjectRenamed = false;
+
   // 2. Read settings file
   let settingsData = await readSingleFile('projects/projects.json')
       .then(fileContent => fileContent)
       .catch(err => console.log(err));
 
   const projectSettingsIndex = await settingsData.findIndex(projectSettings => projectData.id === projectSettings.id);
+  const projectSettingsName = settingsData[projectSettingsIndex].name;
   const projectSettingsLocalPath = settingsData[projectSettingsIndex].local_path;
   const projectSettingsFileName = settingsData[projectSettingsIndex].filename;
 
@@ -239,10 +242,6 @@ app.post('/api/update-project', async (req, res) => {
     ...(projectData.local_path && {"local_path": projectData.local_path})
   };
 
-  await fs.writeFile(path.resolve(__dirname, 'projects/projects.json'), JSON.stringify(settingsData), (err) => {
-    if (err) console.log('Error writing file:', err)
-  });
-
   // 4. Update project file
   const newProjectData = {
     ...oldProjectData,
@@ -250,10 +249,44 @@ app.post('/api/update-project', async (req, res) => {
     ...(projectData.filename && {"filename": projectData.filename})
   };
 
-  fs.writeFile(path.resolve(path.resolve(projectSettingsLocalPath + projectSettingsFileName)), JSON.stringify(newProjectData), (err) => {
-      if (err) console.log('Error writing file:', err)
+  await fs.writeFile(path.resolve(__dirname, 'projects/projects.json'), JSON.stringify(settingsData), (err) => {
+    if (err) console.log('Error writing file:', err)
   });
 
+  if(projectData.local_path) {
+    if(projectSettingsLocalPath !== projectData.local_path) {
+      if(projectData.filename) {
+        isProjectRenamed = true;
+        await fs.writeFile(path.resolve(path.resolve(projectData.local_path + projectData.filename)), JSON.stringify(newProjectData), (err) => {
+          if (err) console.log('Error writing file:', err)
+        });
+      } else {
+        await fs.writeFile(path.resolve(path.resolve(projectData.local_path + projectSettingsFileName)), JSON.stringify(newProjectData), (err) => {
+          if (err) console.log('Error writing file:', err)
+        });
+      }
+      //Here remove old file path
+      await fs.unlink(path.resolve(projectSettingsLocalPath + projectSettingsFileName), function (err) {
+        if (err) throw err;
+        console.log('File deleted.');
+      });
+    } else {
+      await fs.writeFile(path.resolve(path.resolve(projectSettingsLocalPath + projectSettingsFileName)), JSON.stringify(newProjectData), (err) => {
+        if (err) console.log('Error writing file:', err)
+      });
+    }
+  }
+
+  if(projectData.filename && !isProjectRenamed) {
+    await fs.unlink(path.resolve(projectSettingsLocalPath + projectSettingsFileName), function (err) {
+      if (err) throw err;
+      console.log('File deleted.');
+    });
+
+    await fs.writeFile(path.resolve(path.resolve(projectSettingsLocalPath + projectData.filename)), JSON.stringify(newProjectData), (err) => {
+      if (err) console.log('Error writing file:', err)
+    });
+  }
 
   //TODO: Handle file rename and location change based on file inputs from user
 

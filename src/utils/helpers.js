@@ -65,3 +65,8 @@ export const guidGenerator = () => {
   };
   return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
 };
+
+export const removeFilenameFromPath = (str) => {
+  const file = str.split('/').pop();
+  return str.replace(file, "");
+};

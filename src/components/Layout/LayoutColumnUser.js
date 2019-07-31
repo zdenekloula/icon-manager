@@ -1,7 +1,15 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 
-import { removeExtension, checkIconExists, getIconWithIndex, readTextFileAsync, postData, guidGenerator } from '../../utils/helpers'
+import {
+  removeExtension,
+  checkIconExists,
+  getIconWithIndex,
+  readTextFileAsync,
+  postData,
+  guidGenerator,
+  removeFilenameFromPath
+} from '../../utils/helpers'
 
 import Heading from '../Heading';
 import IconBox from "../Icon/IconBox";
@@ -72,9 +80,6 @@ const LayoutColumnUser = () => {
 
   const handleProjectDataUpdate = (event, key) => {
     event.persist();
-    console.log(event);
-    console.log(key);
-    console.log(updatedProjectData);
     updateProjectData(updatedProjectData => {
       const newData = {
         ...updatedProjectData,
@@ -82,10 +87,9 @@ const LayoutColumnUser = () => {
           ...updatedProjectData[key],
           [event.target.name]: event.target.value
         }
-      }
+      };
       return newData;
     });
-    console.log(updatedProjectData);
   };
 
   const removeIcon = (icon) => {
@@ -283,6 +287,10 @@ const LayoutColumnUser = () => {
                           <br/>
 
                           <input type="text" name="name" placeholder="Project name" defaultValue={item.name} onChange={(event) => handleProjectDataUpdate(event, item.id)}/>
+
+                          <input type="text" name="local_path" placeholder="Project local_path" defaultValue={removeFilenameFromPath(item.local_path)} onChange={(event) => handleProjectDataUpdate(event, item.id)}/>
+
+                          <input type="text" name="filename" placeholder="Project filename" defaultValue={item.filename} onChange={(event) => handleProjectDataUpdate(event, item.id)}/>
 
                           {/*<input type="text" name="" placeholder="Path to project" value={item.local_path} />*/}
 
