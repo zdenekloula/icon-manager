@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef, useCallback } from 'react';
 import { settings } from './config'
 import Layout from './components/Layout/Layout'
 import LayoutColumn from './components/Layout/LayoutColumn'
@@ -18,43 +18,43 @@ function Manager(props) {
     right: settings.userColumnSize,
   });
 
+  const setMoveEvent = useCallback((event) => {
+    if (!columnsHandleIsDragging) {
+      return false
+    }
+    const containerWidth = columnsWrapperEl.current.offsetWidth;
+    const containerLeftOffset = columnsWrapperEl.current.offsetLeft;
+    const pointerXPosition = event.clientX - containerLeftOffset;
+    const boxMinWidth = 250;
+
+    const leftColumn = (Math.max(boxMinWidth, pointerXPosition) / containerWidth) * 100;
+    const rightColumn = (Math.max(boxMinWidth, (containerWidth - pointerXPosition)) / containerWidth) * 100;
+
+    const calculateLeftColumn = () => {
+      if (!(leftColumn + rightColumn > 100)) {
+        return leftColumn;
+      }
+    };
+
+    const calculateRightColumn = () => {
+      if (!(leftColumn + rightColumn > 100)) {
+        return rightColumn;
+      }
+    };
+
+    setColumnsSizes({
+      left: calculateLeftColumn(),
+      right: calculateRightColumn()
+    });
+
+  }, [columnsHandleIsDragging]);
+
   useEffect(() => {
     document.addEventListener('mousedown', (event) => {
       if (event.target === columnsHandleEl.current) {
         setColumnsHandleIsDragging(true);
       }
     });
-
-    const setMoveEvent = (event) => {
-      if (!columnsHandleIsDragging) {
-        return false
-      }
-      const containerWidth = columnsWrapperEl.current.offsetWidth;
-      const containerLeftOffset = columnsWrapperEl.current.offsetLeft;
-      const pointerXPosition = event.clientX - containerLeftOffset;
-      const boxMinWidth = 250;
-
-      const leftColumn = (Math.max(boxMinWidth, pointerXPosition) / containerWidth) * 100;
-      const rightColumn = (Math.max(boxMinWidth, (containerWidth - pointerXPosition)) / containerWidth) * 100;
-
-      const calculateLeftColumn = () => {
-        if (!(leftColumn + rightColumn > 100)) {
-          return leftColumn;
-        }
-      };
-
-      const calculateRightColumn = () => {
-        if (!(leftColumn + rightColumn > 100)) {
-          return rightColumn;
-        }
-      };
-
-      setColumnsSizes({
-        left: calculateLeftColumn(),
-        right: calculateRightColumn()
-      });
-
-    };
 
     document.addEventListener('mousemove', setMoveEvent);
     document.addEventListener('mouseup', function () {

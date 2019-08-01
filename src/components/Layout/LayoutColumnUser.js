@@ -24,6 +24,7 @@ import usePortal from '../../hooks/useModal';
 import AppContext from '../../context/AppContext'
 import ExpansionPanelList from "../ExpansionPanel/ExpansionPanelList";
 import ExpansionPanelItem from "../ExpansionPanel/ExpansionPanelItem";
+import Input from '../Input';
 
 const LibraryList = styled.ul`
   display: flex;
@@ -268,12 +269,27 @@ const LayoutColumnUser = () => {
 
                   <Heading type="heading2">Add new project</Heading>
 
-                  <input type="text" name="name" placeholder="Project name" onChange={setNewProjectData} />
-                  <input type="text" name="local_path" placeholder="Path to project" onChange={setNewProjectData} /> <br/>
-                  <input type="text" name="filename" placeholder="Filename" onChange={setNewProjectData} />.json
-                  <span>{newProjectData && newProjectData.name}</span>
+                  <p>
+                    <label htmlFor="newProjectName">Project name</label>
+                    <Input id="newProjectName" type="text" name="name" placeholder="Enter name of your new project..." onChange={setNewProjectData}/>
+                  </p>
 
-                  <Button onClick={() => appendProject()}>Add project</Button>
+                  <p>
+                    <label htmlFor="newProjectLocalPath">Project local path</label>
+                    <Input id="newProjectLocalPath" type="text" name="local_path" placeholder="Enter local path of your new project..." onChange={setNewProjectData}/>
+                  </p>
+
+                  <p>
+                    <label htmlFor="newProjectFilename">Project filename</label>
+                    <Input id="newProjectFilename" type="text" name="filename" placeholder="Enter filename of your new project..." onChange={setNewProjectData}/>.json
+                  </p>
+
+                  {/* <input type="text" name="name" placeholder="Project name" onChange={setNewProjectData} /> */}
+                  {/* <input type="text" name="local_path" placeholder="Path to project" onChange={setNewProjectData} /> <br/> */}
+                  {/* <input type="text" name="filename" placeholder="Filename" onChange={setNewProjectData} />.json */}
+                  {/* <span>{newProjectData && newProjectData.name}</span> */}
+
+                  <Button onClick={appendProject}>Add project</Button>
 
 
                   <br/>

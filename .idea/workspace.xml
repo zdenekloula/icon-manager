@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="baeb749b-31f1-4eca-ad5c-92c70cb9d66a" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/projects/projects.json" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/projects/projects.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/backend/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/backend/server.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/components/Layout/LayoutColumnUser.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/components/Layout/LayoutColumnUser.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/utils/helpers.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/helpers.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testslozka/nzip.json" beforeDir="false" />
-    </list>
+    <list default="true" id="baeb749b-31f1-4eca-ad5c-92c70cb9d66a" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,10 +10,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/backend/server.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="490">
+            <state relative-caret-position="548">
               <caret line="268" column="85" selection-start-line="268" selection-start-column="85" selection-end-line="268" selection-end-column="85" />
               <folding>
                 <element signature="n#!!block;n#readLibraries#0" />
@@ -34,7 +27,25 @@
         <entry file="file://$PROJECT_DIR$/src/backend/projects/projects.json">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="78">
-              <caret column="309" lean-forward="true" selection-start-column="309" selection-end-column="309" />
+              <caret column="293" selection-start-column="293" selection-end-column="293" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/testslozka/nzip.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="416">
+              <caret column="1848" selection-start-column="1848" selection-end-column="1848" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/package.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="310">
+              <caret line="25" column="35" lean-forward="true" selection-start-line="25" selection-start-column="35" selection-end-line="25" selection-end-column="35" />
             </state>
           </provider>
         </entry>
@@ -52,7 +63,7 @@
         <entry file="file://$PROJECT_DIR$/src/utils/helpers.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="703">
-              <caret line="70" column="31" lean-forward="true" selection-start-line="70" selection-start-column="31" selection-end-line="70" selection-end-column="31" />
+              <caret line="70" column="31" selection-start-line="70" selection-start-column="31" selection-end-line="70" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -274,7 +285,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1920" height="1106" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.26293558" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
@@ -498,13 +508,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="106">
-          <caret line="18" column="32" selection-start-line="18" selection-start-column="32" selection-end-line="18" selection-end-column="32" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/components/Heading.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="338">
@@ -582,7 +585,7 @@
     <entry file="file://$PROJECT_DIR$/src/utils/helpers.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="703">
-          <caret line="70" column="31" lean-forward="true" selection-start-line="70" selection-start-column="31" selection-end-line="70" selection-end-column="31" />
+          <caret line="70" column="31" selection-start-line="70" selection-start-column="31" selection-end-line="70" selection-end-column="31" />
         </state>
       </provider>
     </entry>
@@ -600,8 +603,29 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/backend/server.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="548">
+          <caret line="268" column="85" selection-start-line="268" selection-start-column="85" selection-end-line="268" selection-end-column="85" />
+          <folding>
+            <element signature="n#!!block;n#readLibraries#0" />
+            <element signature="n#!!block;n#readIcons#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/testslozka2/nzip2.json">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/testslozka2/nzip.json">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/backend/projects/projects.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="78">
+          <caret column="293" selection-start-column="293" selection-end-column="293" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/testslozka/nzip.json">
       <provider selected="true" editor-type-id="text-editor">
@@ -610,21 +634,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/backend/projects/projects.json">
+    <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="78">
-          <caret column="309" lean-forward="true" selection-start-column="309" selection-end-column="309" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/backend/server.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="490">
-          <caret line="268" column="85" selection-start-line="268" selection-start-column="85" selection-end-line="268" selection-end-column="85" />
-          <folding>
-            <element signature="n#!!block;n#readLibraries#0" />
-            <element signature="n#!!block;n#readIcons#0" />
-          </folding>
+        <state relative-caret-position="310">
+          <caret line="25" column="35" lean-forward="true" selection-start-line="25" selection-start-column="35" selection-end-line="25" selection-end-column="35" />
         </state>
       </provider>
     </entry>
