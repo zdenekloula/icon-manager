@@ -5,17 +5,17 @@ const StyledInput = styled((props) => {
   const {
     className,
     children,
-    ...other
+    spaceAfter,
+    ...otherProps
   } = props;
   return(
-      <input className={className} {...other} />
-    )
-  },
-)`
+      <input className={className} {...otherProps} />
+  )
+})`
   display: block;
   border: 1px solid ${({theme}) => theme.borderColor};
   padding: 14px 19px 15px;
-  background: ${({theme}) => theme.backgroundDark};
+  background: ${({theme}) => theme.backgroundInput};
   font-size: 14px;
   line-height: normal;
   width: 100%;
@@ -25,6 +25,7 @@ const StyledInput = styled((props) => {
   transition: border-color 0.3s;
   color: #fff;
   box-sizing: border-box;
+  margin-bottom: ${({spaceAfter}) => spaceAfter}px;
   &:focus {
     outline: 0;
   }
@@ -33,10 +34,11 @@ const StyledInput = styled((props) => {
 const Input = (props) => {
   const {
     className,
-    ...other
+    spaceAfter,
+    ...otherProps
   } = props;
   return (
-    <StyledInput {...other} />
+    <StyledInput {...otherProps} spaceAfter={spaceAfter} />
   )
 };
 

@@ -1,16 +1,21 @@
 import React, {useState, useEffect } from 'react';
-import { ThemeProvider } from 'styled-components';
+import { ThemeProvider, createGlobalStyle } from 'styled-components';
 import { AppProvider } from './context/AppContext'
 import Manager from './Manager';
 
 const light = {
   "THEME_NAME": "light",
   "primary": "#457BF4",
+  "secondary": "#72195A",
+  "success": "#149911",
+  "warning": "#FF8C42",
+  "danger": "#DD0046",
   "primaryFontColor": "#fff",
   "backgroundPrimary": "#F8F8F8",
   "backgroundSecondary": "#fff",
   "backgroundTertiary": "#f2f2f2",
   "backgroundDark": "#ccc",
+  "backgroundInput": "#0d0e13",
   "handleColor": "#E5E5E5",
   "borderColor": "rgba(0, 0, 0, 0.1)",
   "scrollbarBg": "rgba(0, 0, 0, 0.4)",
@@ -38,11 +43,16 @@ const light = {
 const dark = {
   "THEME_NAME": "dark",
   "primary": "#457BF4",
+  "secondary": "#72195A",
+  "success": "#149911",
+  "warning": "#FF8C42",
+  "danger": "#DD0046",
   "primaryFontColor": "#fff",
   "backgroundPrimary": "#14141C",
   "backgroundSecondary": "#1C1C28",
   "backgroundTertiary": "#242633",
   "backgroundDark": "#1b1c27",
+  "backgroundInput": "#0d0e13",
   "handleColor": "#30303F",
   "borderColor": "rgba(255, 255, 255, 0.1)",
   "scrollbarBg": "rgba(255, 255, 255, 0.4)",
@@ -66,6 +76,22 @@ const dark = {
     }
   }
 };
+
+const GlobalStyles = createGlobalStyle`
+  * ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  * ::-webkit-scrollbar-thumb {
+    background: ${(props) => props.theme.scrollbarBg};
+    border-radius: 20px;
+  }
+
+  * ::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 20px;
+  }
+`
 
 function App() {
   const [loading, setLoading] = useState(true);
@@ -119,6 +145,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <div className="App">
           { !loading && <Manager appData={appData} />}
+          <GlobalStyles />
         </div>
       </ThemeProvider>
     </AppProvider>

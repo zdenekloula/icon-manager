@@ -28,19 +28,6 @@ const IconGridContainer = styled.div`
   &:focus {
     outline: 0;
   }
-  * ::-webkit-scrollbar {
-    width: 8px;
-  }
- 
-  * ::-webkit-scrollbar-thumb {
-    background: ${(props) => props.theme.scrollbarBg};
-    border-radius: 20px;
-  }
-
-  * ::-webkit-scrollbar-track {
-    background: transparent;
-    border-radius: 20px;
-  }
 `;
 
 const CARD_HEIGHT = 130;

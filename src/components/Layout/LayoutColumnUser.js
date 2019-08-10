@@ -1,6 +1,18 @@
 import React, { useContext, useState } from 'react';
 import styled from 'styled-components';
 
+import Heading from '../Heading';
+import IconBox from "../Icon/IconBox";
+import IconBoxList from "../Icon/IconBoxList";
+import IconBoxItem from "../Icon/IconBoxItem";
+import LayoutColumnHeader from './LayoutColumnHeader';
+import LayoutColumnHeaderTitle from './LayoutColumnHeaderTitle';
+import Modal from '../../components/Modal';
+import ExpansionPanelList from "../ExpansionPanel/ExpansionPanelList";
+import ExpansionPanelItem from "../ExpansionPanel/ExpansionPanelItem";
+import Input from '../Input';
+import Button from '../Button';
+
 import {
   removeExtension,
   checkIconExists,
@@ -11,20 +23,12 @@ import {
   removeFilenameFromPath
 } from '../../utils/helpers'
 
-import Heading from '../Heading';
-import IconBox from "../Icon/IconBox";
-import IconBoxList from "../Icon/IconBoxList";
-import IconBoxItem from "../Icon/IconBoxItem";
-import LayoutColumnHeader from './LayoutColumnHeader';
-import Modal from '../../components/Modal';
-
 import useForm from '../../hooks/useForm';
 import usePortal from '../../hooks/useModal';
 
 import AppContext from '../../context/AppContext'
-import ExpansionPanelList from "../ExpansionPanel/ExpansionPanelList";
-import ExpansionPanelItem from "../ExpansionPanel/ExpansionPanelItem";
-import Input from '../Input';
+import Stack from '../Stack';
+
 
 const LibraryList = styled.ul`
   display: flex;
@@ -63,12 +67,12 @@ const LibraryItem = styled.li`
     }
   }
 `;
-
+/* 
 const Button = styled.button`
   display: block;
   background: #ff0000;
   color: #fff;
-`;
+`; */
 
 const LayoutColumnUser = () => {
   const { projectsData, activeProject, setActiveProject, updateProjectsData } = useContext(AppContext);
@@ -239,6 +243,8 @@ const LayoutColumnUser = () => {
       id: projectId
     };
 
+    console.log(dataForUpdate)
+
     postData('/api/update-project', JSON.stringify({
       "projectData": dataForUpdate,
     }))
@@ -259,73 +265,69 @@ const LayoutColumnUser = () => {
   return (
       <div>
         <LayoutColumnHeader columnProjects>
-          <div>
-            <Heading element="h2" type="heading1">Your projects</Heading>
+            <LayoutColumnHeaderTitle>
+              <Heading element="h2" type="heading1" display="inlineBlock">Your projects</Heading>
 
-            <button onClick={toggleFirstPortal}>Open Modal</button>
-            { isFirstPortalOpened &&
-              <FirstPortal>
-                <Modal closeModal={closeFirstPortal}>
+              <Button onClick={toggleFirstPortal}>Project Settings</Button>
+              { isFirstPortalOpened &&
+                <FirstPortal>
+                  <Modal closeModal={closeFirstPortal}>
 
-                  <Heading type="heading2">Add new project</Heading>
+                    <Heading type="heading2" spaceAfter="10">Add new project</Heading>
 
-                  <p>
-                    <label htmlFor="newProjectName">Project name</label>
-                    <Input id="newProjectName" type="text" name="name" placeholder="Enter name of your new project..." onChange={setNewProjectData}/>
-                  </p>
+                    <p>
+                      <label htmlFor="newProjectName">Project name</label>
+                      <Input id="newProjectName" type="text" name="name" placeholder="Enter name of your new project..." onChange={setNewProjectData} />
+                    </p>
 
-                  <p>
-                    <label htmlFor="newProjectLocalPath">Project local path</label>
-                    <Input id="newProjectLocalPath" type="text" name="local_path" placeholder="Enter local path of your new project..." onChange={setNewProjectData}/>
-                  </p>
+                    <p>
+                      <label htmlFor="newProjectLocalPath">Project local path</label>
+                      <Input id="newProjectLocalPath" type="text" name="local_path" placeholder="Enter local path of your new project..." onChange={setNewProjectData}/>
+                    </p>
 
-                  <p>
-                    <label htmlFor="newProjectFilename">Project filename</label>
-                    <Input id="newProjectFilename" type="text" name="filename" placeholder="Enter filename of your new project..." onChange={setNewProjectData}/>.json
-                  </p>
+                    <p>
+                      <label htmlFor="newProjectFilename">Project filename</label>
+                      <Input id="newProjectFilename" type="text" name="filename" placeholder="Enter filename of your new project..." onChange={setNewProjectData}/>.json
+                    </p>
 
-                  {/* <input type="text" name="name" placeholder="Project name" onChange={setNewProjectData} /> */}
-                  {/* <input type="text" name="local_path" placeholder="Path to project" onChange={setNewProjectData} /> <br/> */}
-                  {/* <input type="text" name="filename" placeholder="Filename" onChange={setNewProjectData} />.json */}
-                  {/* <span>{newProjectData && newProjectData.name}</span> */}
+                    <Button color="success" onClick={appendProject}>Add project</Button>
+                    <Heading type="heading2" spaceBefore="20" spaceAfter="10">Project managment</Heading>
+                    <ExpansionPanelList>
+                      {projectsData.map((item, index) => (
+                          <ExpansionPanelItem title={item.name} key={item.id}>
+                            <label>
+                              Project name:
+                              <Input type="text" name="name" placeholder="Project name" defaultValue={item.name} onChange={(event) => handleProjectDataUpdate(event, item.id)} spaceAfter="10" />
+                            </label>
 
-                  <Button onClick={appendProject}>Add project</Button>
+                            <label>
+                              Project local_path:
+                              <Input type="text" name="local_path" placeholder="Project local_path..." defaultValue={removeFilenameFromPath(item.local_path)} onChange={(event) => handleProjectDataUpdate(event, item.id)} spaceAfter="15"/>
+                            </label>
+                            
+                            <label>
+                              Project filename:
+                              <Input type="text" name="filename" placeholder="Project filename..." defaultValue={item.filename} onChange={(event) => handleProjectDataUpdate(event, item.id)} spaceAfter="15"/>
+                            </label>
 
+                            {/*<input type="text" name="" placeholder="Path to project" value={item.local_path} />*/}
 
-                  <br/>
-                  <Heading type="heading2">Project managment</Heading>
-                  <ExpansionPanelList>
-                    {projectsData.map((item, index) => (
-                        <ExpansionPanelItem title={item.name} key={item.id}>
-                          {/*<LibraryLink href="#" onClick={() => setActiveProject(index)} isActive={index === activeProject}>{item.name}</LibraryLink>*/}
+                            {/*<input type="text" name="" placeholder="Filename" onChange={setNewProjectData} value={item.filename} />.json*/}
 
-                          <span>New Name:</span><span>{updatedProjectData[item.id] && updatedProjectData[item.id].name}</span>
-                          <br/>
-
-                          <input type="text" name="name" placeholder="Project name" defaultValue={item.name} onChange={(event) => handleProjectDataUpdate(event, item.id)}/>
-
-                          <input type="text" name="local_path" placeholder="Project local_path" defaultValue={removeFilenameFromPath(item.local_path)} onChange={(event) => handleProjectDataUpdate(event, item.id)}/>
-
-                          <input type="text" name="filename" placeholder="Project filename" defaultValue={item.filename} onChange={(event) => handleProjectDataUpdate(event, item.id)}/>
-
-                          {/*<input type="text" name="" placeholder="Path to project" value={item.local_path} />*/}
-
-                          {/*<input type="text" name="" placeholder="Filename" onChange={setNewProjectData} value={item.filename} />.json*/}
-
-                          <Button onClick={() => updateProject(item.id)}>Save settings</Button>
-                          <Button onClick={() => deleteProject(item.id)}>Delete Project</Button>
+                            <Stack>
+                              <Button color="success" onClick={() => updateProject(item.id)}>Save settings</Button>
+                              <Button color="danger" onClick={() => deleteProject(item.id)}>Delete Project</Button>
+                            </Stack>
 
 
-                        </ExpansionPanelItem>
-                    ))}
-                  </ExpansionPanelList>
+                          </ExpansionPanelItem>
+                      ))}
+                    </ExpansionPanelList>
 
-                </Modal>
-              </FirstPortal>
-            }
-
-          </div>
-
+                  </Modal>
+                </FirstPortal>
+              }
+            </LayoutColumnHeaderTitle>
           <LibraryList>
             {projectsData.map((item, index) => (
               <LibraryItem key={index}>

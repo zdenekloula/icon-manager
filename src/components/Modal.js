@@ -24,6 +24,8 @@ const ModalWrapper = styled.div`
   border-radius: 4px;
   background: ${({theme}) => theme.modalBackground};
   color: ${({theme}) => theme.fontColor};
+  max-height: calc(100vh - 20px);
+  overflow: auto;
 `;
 
 const ModalHeader= styled.div`

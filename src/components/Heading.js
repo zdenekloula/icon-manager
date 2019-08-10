@@ -39,7 +39,12 @@ const getHeading = name => ({type, theme}) =>  {
 };
 
 const StyledHeading = styled(
-  ({ element: Component, className, children, id }) => (
+  ({
+    element: Component, 
+    children, 
+    className, 
+    id,
+  }) => (
     <Component
       className={className}
       id={id}
@@ -48,10 +53,11 @@ const StyledHeading = styled(
     </Component>
   ),
 )`
+  display: ${({display}) => display === "inlineBlock" && "inline-block"};
   font-size: ${getHeading('headingSize')}px;
   font-weight: ${getHeading('headingWeight')};
   color: ${({theme}) => theme.fontColor};
-  margin: 0;
+  margin: ${({spaceBefore}) => spaceBefore ? `${spaceBefore}px` : 0} 0 ${({spaceAfter}) => spaceAfter ? `${spaceAfter}px` : 0} 0
 `;
 
 const Heading = ({
@@ -59,11 +65,17 @@ const Heading = ({
   type = TYPES.HEADING1,
   element = ELEMENTS.H1,
   id,
+  display,
+  spaceAfter,
+  spaceBefore
 }) => (
   <StyledHeading
     id={id}
     type={type}
     element={element}
+    display={display}
+    spaceAfter={spaceAfter}
+    spaceBefore={spaceBefore}
   >
     {children}
   </StyledHeading>

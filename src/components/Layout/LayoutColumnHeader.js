@@ -11,7 +11,6 @@ padding: ${(props) => props.columnProjects ? "20px 35px 0 25px" : "20px 35px 20p
 `;
 
 const LayoutColumnHeader = (props) => {
-  
   return (
     <StyledLayoutColumnHeader {...props}>
       {props.children}

@@ -216,8 +216,9 @@ app.post('/api/update-project', async (req, res) => {
   // 1. Get data from request
   const body = req.body;
   const projectData = body.projectData;
+  console.log(projectData)
 
-  let isProjectRenamed = false;
+  let isProjectFilenameRenamed = false;
 
   // 2. Read settings file
   let settingsData = await readSingleFile('projects/projects.json')
@@ -256,7 +257,7 @@ app.post('/api/update-project', async (req, res) => {
   if(projectData.local_path) {
     if(projectSettingsLocalPath !== projectData.local_path) {
       if(projectData.filename) {
-        isProjectRenamed = true;
+        isProjectFilenameRenamed = true;
         await fs.writeFile(path.resolve(path.resolve(projectData.local_path + projectData.filename)), JSON.stringify(newProjectData), (err) => {
           if (err) console.log('Error writing file:', err)
         });
@@ -275,9 +276,13 @@ app.post('/api/update-project', async (req, res) => {
         if (err) console.log('Error writing file:', err)
       });
     }
+  } else if(projectData.name && !projectData.local_path && !projectData.filename) {
+    await fs.writeFile(path.resolve(path.resolve(projectSettingsLocalPath + projectSettingsFileName)), JSON.stringify(newProjectData), (err) => {
+      if (err) console.log('Error writing file:', err)
+    });
   }
 
-  if(projectData.filename && !isProjectRenamed) {
+  if(projectData.filename && !isProjectFilenameRenamed) {
     await fs.unlink(path.resolve(projectSettingsLocalPath + projectSettingsFileName), function (err) {
       if (err) throw err;
       console.log('File deleted.');
@@ -287,9 +292,6 @@ app.post('/api/update-project', async (req, res) => {
       if (err) console.log('Error writing file:', err)
     });
   }
-
-  //TODO: Handle file rename and location change based on file inputs from user
-
 
   // Create project file in directory
 
