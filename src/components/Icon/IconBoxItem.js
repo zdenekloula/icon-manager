@@ -7,13 +7,12 @@ const IconBoxItem = styled.li`
   letter-spacing: normal;
   display: flex;
   flex-direction: column;
-  flex: 1 1 130px;
+  flex: 1 1 20%;
   width: 100%;
   position: relative;
   border-left: 20px solid transparent;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
   max-width: 20%;
-  min-width: 130px;
 `;
 
 const IconBox = (props) => {

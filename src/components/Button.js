@@ -1,4 +1,4 @@
-import React, { useMemo }  from 'react';
+import React  from 'react';
 import styled from 'styled-components';
 
 const COLORS = {
@@ -61,6 +61,13 @@ export const StyledButton = styled((props) => {
   text-decoration: none;
   text-align: center;
   cursor: pointer;
+  transition: transform 0.3s;
+  &:active {
+    transform: scale(0.95);
+  }
+  &:focus {
+    outline: 0;
+  }
 `;
 
 const StyledButtonText = styled.span`

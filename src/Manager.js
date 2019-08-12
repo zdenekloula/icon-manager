@@ -64,7 +64,7 @@ function Manager(props) {
     return () => {
       document.removeEventListener("mousemove", setMoveEvent);
     };
-  }, [columnsHandleIsDragging]);
+  }, [columnsHandleIsDragging, setMoveEvent]);
 
   const setLibrary = (index) => {
     setActiveLibrary(index);

@@ -54,7 +54,7 @@ const LibraryItem = styled.li`
 
 const ToggleContainer = styled.div`
   padding: 0 20px;
-  margin-bottom: 42px;
+  margin-bottom: 40px;
 `;
 
 const LayoutColumnLibrary = (props) => {

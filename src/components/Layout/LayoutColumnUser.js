@@ -5,6 +5,7 @@ import Heading from '../Heading';
 import IconBox from "../Icon/IconBox";
 import IconBoxList from "../Icon/IconBoxList";
 import IconBoxItem from "../Icon/IconBoxItem";
+import IconBoxListWrapper from "../Icon/IconBoxListWrapper";
 import LayoutColumnHeader from './LayoutColumnHeader';
 import LayoutColumnHeaderTitle from './LayoutColumnHeaderTitle';
 import Modal from '../../components/Modal';
@@ -28,6 +29,10 @@ import usePortal from '../../hooks/useModal';
 
 import AppContext from '../../context/AppContext'
 import Stack from '../Stack';
+import DragAndDrop from '../DragAndDrop';
+import LayoutColumnFooter from './LayoutColumnFooter';
+import LayoutColumnFooterDrag from './LayoutColumnFooterDrag';
+import LayoutColumnFooterGen from './LayoutColumnFooterGen';
 
 
 const LibraryList = styled.ul`
@@ -129,10 +134,17 @@ const LayoutColumnUser = () => {
     console.log("generate library")
   };
 
-  const appendIcon = async (event) => {
+  const appendIcon = async (event, isDragAndDrop) => {
+    console.log(event)
     let newProjectData = [...projectsData];
     let iconsToAppend = [];
-    const inputFiles = event.target.files;
+    let inputFiles;
+    if(!isDragAndDrop) {
+      event.persist()
+      inputFiles = event.target.files;
+    } else {
+      inputFiles = event
+    }
     const projectIcons = newProjectData[activeProject].icons;
 
     if(inputFiles.length > 0) {
@@ -237,14 +249,22 @@ const LayoutColumnUser = () => {
 
   const updateProject = (projectId) => {
     //Do validation here
+    let oldProjectData = [...projectsData];
 
     const dataForUpdate = {
       ...updatedProjectData[projectId],
       id: projectId
     };
+    
+    //Local update
+    const newProjectData = {
+      ...projectsData[activeProject],
+      ...dataForUpdate
+    }
+    oldProjectData[activeProject] = newProjectData
+    updateProjectsData(oldProjectData);
 
-    console.log(dataForUpdate)
-
+    //Backend update
     postData('/api/update-project', JSON.stringify({
       "projectData": dataForUpdate,
     }))
@@ -338,27 +358,34 @@ const LayoutColumnUser = () => {
 
         </LayoutColumnHeader>
 
-        <IconBoxList>
-          {
-            projectsData[activeProject].icons.map((icon, index) => {
-            return(
-              <IconBoxItem key={index}>
-                <IconBox data={icon} onClick={() => removeIcon(icon)} />
-              </IconBoxItem>
-            )
-          })}
-        </IconBoxList>
+        <IconBoxListWrapper>
+          <IconBoxList>
+            {
+              projectsData[activeProject].icons.map((icon, index) => {
+              return(
+                <IconBoxItem key={index}>
+                  <IconBox data={icon} onClick={() => removeIcon(icon)} />
+                </IconBoxItem>
+              )
+            })}
+          </IconBoxList>
+        </IconBoxListWrapper>
 
-        <div>
-          <label>Path to final folder</label>
-          <input type="text" />
-          <button onClick={generateLibrary}>
-            Generovat
-          </button>
-          <br/>
+        <LayoutColumnFooter>
+          <LayoutColumnFooterDrag>
+            <DragAndDrop appendIcon={appendIcon}>
+              <p>Drop files here or <input type="file" name="test" id="test" onChange={(event) => appendIcon(event)} multiple/></p>
+            </DragAndDrop>
+          </LayoutColumnFooterDrag>
 
-          <input type="file" name="test" id="test" onChange={(event) => appendIcon(event)} multiple/>
-        </div>
+          <LayoutColumnFooterGen>
+            <Button color="success" onClick={generateLibrary}>
+              Generate sprite
+            </Button>
+          </LayoutColumnFooterGen>
+
+          
+        </LayoutColumnFooter>
       </div>
   );
 };
