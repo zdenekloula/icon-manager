@@ -90,7 +90,7 @@ const LayoutColumnLibrary = (props) => {
           ))}
         </LibraryList>
       </div>
-      <button onClick={appendTestLibrary}>Append Library</button>
+      {/* <button onClick={appendTestLibrary}>Append Library</button> */}
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components';
-import Heading from "./Heading";
+import Heading, { StyledHeading } from "./Heading";
 
 const ModalBodyOverlay = styled.div`
   position: fixed;
@@ -35,6 +35,9 @@ const ModalHeader= styled.div`
   color: ${({theme}) => theme.primaryFontColor};
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
+  ${StyledHeading} {
+    color: ${({theme}) => theme.primaryFontColor};
+  }
 `;
 
 const ModalBody = styled.div`

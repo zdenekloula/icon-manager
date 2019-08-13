@@ -23,7 +23,7 @@ const StyledInput = styled((props) => {
   border-radius: 2px;
   appearance: none;
   transition: border-color 0.3s;
-  color: #fff;
+  color: ${({theme}) => theme.fontColor};
   box-sizing: border-box;
   margin-bottom: ${({spaceAfter}) => spaceAfter}px;
   &:focus {

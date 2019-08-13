@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const StyledLayoutColumn = styled.div`
   position: relative;
   background-color: ${({isFixed, theme}) => isFixed ? theme.backgroundPrimary : theme.backgroundSecondary};
-  color: #fff;
+  color: ${({theme}) => theme.fontColor};
   box-sizing: border-box;
   height: 100vh;
   max-height: 100vh;

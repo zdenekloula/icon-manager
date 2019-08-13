@@ -38,7 +38,7 @@ const getHeading = name => ({type, theme}) =>  {
   return settings[name][type];
 };
 
-const StyledHeading = styled(
+export const StyledHeading = styled(
   ({
     element: Component, 
     children, 

@@ -49,40 +49,42 @@ const IconGrid = (props) => {
   const { projectsData, updateProjectsData, activeProject } = useContext(AppContext);
 
   const iconBoxClick = (icon) => {
-    let newProjectData = [...projectsData];
-    const projectIcons = newProjectData[activeProject].icons;
-    const iconName = icon.name;
+    if(projectsData.length > 0) {
+      let newProjectData = [...projectsData];
+      const projectIcons = newProjectData[activeProject].icons;
+      const iconName = icon.name;
 
-    if (!checkIconExists(iconName, projectIcons)) {
-      postData('/api/append-icon', JSON.stringify({
-        "iconData": icon,
-        "projectPath": newProjectData[activeProject].local_path
-      }))
-        .then(() => console.log("Ikona " + iconName + " pridana."))
-        .catch(error => console.error(error));
+      if (!checkIconExists(iconName, projectIcons)) {
+        postData('/api/append-icon', JSON.stringify({
+          "iconData": icon,
+          "projectPath": newProjectData[activeProject].local_path
+        }))
+          .then(() => console.log("Ikona " + iconName + " pridana."))
+          .catch(error => console.error(error));
 
-      // Prepare icons data
-      newProjectData[activeProject].icons = [...projectsData[activeProject].icons, icon];
+        // Prepare icons data
+        newProjectData[activeProject].icons = [...projectsData[activeProject].icons, icon];
 
-      // React context update
-      updateProjectsData(newProjectData);
-    } else {
-      const newIcon = getIconWithIndex(icon, projectIcons);
+        // React context update
+        updateProjectsData(newProjectData);
+      } else {
+        const newIcon = getIconWithIndex(icon, projectIcons);
 
-      postData('/api/append-icon', JSON.stringify({
-        "iconData": newIcon,
-        "projectPath": newProjectData[activeProject].local_path
-      }))
-        .then(() => console.log("Ikona " + iconName + " pridana."))
-        .catch(error => console.error(error));
+        postData('/api/append-icon', JSON.stringify({
+          "iconData": newIcon,
+          "projectPath": newProjectData[activeProject].local_path
+        }))
+          .then(() => console.log("Ikona " + iconName + " pridana."))
+          .catch(error => console.error(error));
 
-      newProjectData[activeProject].icons = [...projectsData[activeProject].icons, newIcon];
+        newProjectData[activeProject].icons = [...projectsData[activeProject].icons, newIcon];
 
-      // React context update
-      updateProjectsData(newProjectData);
+        // React context update
+        updateProjectsData(newProjectData);
 
-      // There will be "already exists notification";
-      console.log("vami zadana ikona jiz existuje");
+        // There will be "already exists notification";
+        console.log("vami zadana ikona jiz existuje");
+      }
     }
   };
 

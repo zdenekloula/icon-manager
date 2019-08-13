@@ -46,7 +46,7 @@ const LibraryList = styled.ul`
 const LibraryLink = styled.a`
   position: relative;
   display: block;
-  padding: 16px 18px;
+  padding: ${({isEmpty}) => isEmpty ? `16px 18px 16px 0` : `16px 18px`};
   color: ${(props) => props.theme.fontColor};
   text-decoration: none;
   ${({isActive, theme}) => isActive && `
@@ -72,12 +72,6 @@ const LibraryItem = styled.li`
     }
   }
 `;
-/* 
-const Button = styled.button`
-  display: block;
-  background: #ff0000;
-  color: #fff;
-`; */
 
 const LayoutColumnUser = () => {
   const { projectsData, activeProject, setActiveProject, updateProjectsData } = useContext(AppContext);
@@ -131,7 +125,16 @@ const LayoutColumnUser = () => {
   };
 
   const generateLibrary = () => {
-    console.log("generate library")
+    postData('/api/generate-sprite', JSON.stringify({
+      "projectData": {
+        "local_path": projectsData[activeProject].local_path
+      }
+    }))
+      .then(() => {
+        console.log("Client: Project " + projectsData[activeProject].name + " generated.")
+      })
+      .catch(error => console.error(error));
+
   };
 
   const appendIcon = async (event, isDragAndDrop) => {
@@ -330,15 +333,10 @@ const LayoutColumnUser = () => {
                               <Input type="text" name="filename" placeholder="Project filename..." defaultValue={item.filename} onChange={(event) => handleProjectDataUpdate(event, item.id)} spaceAfter="15"/>
                             </label>
 
-                            {/*<input type="text" name="" placeholder="Path to project" value={item.local_path} />*/}
-
-                            {/*<input type="text" name="" placeholder="Filename" onChange={setNewProjectData} value={item.filename} />.json*/}
-
                             <Stack>
                               <Button color="success" onClick={() => updateProject(item.id)}>Save settings</Button>
                               <Button color="danger" onClick={() => deleteProject(item.id)}>Delete Project</Button>
                             </Stack>
-
 
                           </ExpansionPanelItem>
                       ))}
@@ -349,11 +347,17 @@ const LayoutColumnUser = () => {
               }
             </LayoutColumnHeaderTitle>
           <LibraryList>
-            {projectsData.map((item, index) => (
-              <LibraryItem key={index}>
-                <LibraryLink href="#" onClick={() => setActiveProject(index)} isActive={index === activeProject}>{item.name}</LibraryLink>
-              </LibraryItem>
-            ))}
+            {
+              projectsData.length > 0 ?
+                projectsData.map((item, index) => (
+                  <LibraryItem key={index}>
+                    <LibraryLink href="#" onClick={() => setActiveProject(index)} isActive={index === activeProject}>{item.name}</LibraryLink>
+                  </LibraryItem>
+                ))
+              : <LibraryItem>
+                  <LibraryLink href="#" isEmpty>You don't have any projects.</LibraryLink>
+                </LibraryItem>
+            }
           </LibraryList>
 
         </LayoutColumnHeader>
@@ -361,31 +365,36 @@ const LayoutColumnUser = () => {
         <IconBoxListWrapper>
           <IconBoxList>
             {
-              projectsData[activeProject].icons.map((icon, index) => {
-              return(
-                <IconBoxItem key={index}>
-                  <IconBox data={icon} onClick={() => removeIcon(icon)} />
-                </IconBoxItem>
-              )
-            })}
+              projectsData.length > 0 ?
+                projectsData[activeProject].icons.map((icon, index) => {
+                return(
+                  <IconBoxItem key={index}>
+                    <IconBox data={icon} onClick={() => removeIcon(icon)} />
+                  </IconBoxItem>
+                )
+              })
+              : <p></p>
+            }
           </IconBoxList>
         </IconBoxListWrapper>
 
-        <LayoutColumnFooter>
-          <LayoutColumnFooterDrag>
-            <DragAndDrop appendIcon={appendIcon}>
-              <p>Drop files here or <input type="file" name="test" id="test" onChange={(event) => appendIcon(event)} multiple/></p>
-            </DragAndDrop>
-          </LayoutColumnFooterDrag>
+        { 
+          projectsData.length > 0 &&
+            <LayoutColumnFooter>
+              <LayoutColumnFooterDrag>
+                <DragAndDrop appendIcon={appendIcon}>
+                  <p>Drop files here or <input type="file" name="test" id="test" onChange={(event) => appendIcon(event)} multiple/></p>
+                </DragAndDrop>
+              </LayoutColumnFooterDrag>
 
-          <LayoutColumnFooterGen>
-            <Button color="success" onClick={generateLibrary}>
-              Generate sprite
-            </Button>
-          </LayoutColumnFooterGen>
-
-          
-        </LayoutColumnFooter>
+              <LayoutColumnFooterGen>
+                <Button color="success" onClick={generateLibrary}>
+                  Generate sprite
+                </Button>
+              </LayoutColumnFooterGen>
+            </LayoutColumnFooter>
+        }
+        
       </div>
   );
 };

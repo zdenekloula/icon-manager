@@ -139,6 +139,17 @@ function readProjects(projectsFilepaths) {
   });
 }
 
+function removeFilenameFromPath(str) {
+  const file = str.split('/').pop();
+  return str.replace(file, "");
+};
+
+async function asyncForEach(array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+}
+
 app.post('/api/append-icon', async (req, res) => {
   // 1. Get data from req (svgSource, projectName)
   const body = req.body;
@@ -216,7 +227,6 @@ app.post('/api/update-project', async (req, res) => {
   // 1. Get data from request
   const body = req.body;
   const projectData = body.projectData;
-  console.log(projectData)
 
   let isProjectFilenameRenamed = false;
 
@@ -373,22 +383,20 @@ app.post('/api/generate-sprite', async (req, res) => {
   const TEMP_FOLDER_DIR = path.resolve(__dirname, TEMP_FOLDER);
 
   const body = req.body;
-  const exportPath = body.exportPath;
-  const projectName = body.projectName;
+  const projectData = body.projectData;
+  const projectPath = projectData.local_path;
+  const projectPathWithoutFilename = removeFilenameFromPath(projectPath)
 
   // 1. Get project json
-
-  const projectData = await readSingleFile(path.resolve(__dirname, 'projects/' + projectName))
-      .then(items => items)
+  const localProjectData = await readSingleFile(path.resolve(__dirname, projectPath))      .then(items => items)
       .catch(err => console.log(err));
 
   // 2. Create temp folder with all SVGs from JSON project for sprite generation
-
   if (!fs.existsSync(TEMP_FOLDER)){
       await fs.mkdirSync(TEMP_FOLDER);
   }
 
-  await projectData.icons.map(icon => {
+  await localProjectData.icons.map(icon => {
     svgo.optimize(icon.source).then(({data}) => {
       fs.writeFile(
         path.resolve(path.resolve(__dirname, TEMP_FOLDER + '/' + icon.filename)),
@@ -402,40 +410,41 @@ app.post('/api/generate-sprite', async (req, res) => {
 
   // 3. Load all SVGs into generator from temp folder
 
-  await glob.glob('**/*.svg', { cwd: TEMP_FOLDER_DIR }, (err, files) => {
-    files.forEach(file => {
+  await glob('**/*.svg', { cwd: TEMP_FOLDER_DIR }, async (err, files) => {
+
+    // 4. Compile added SVGs into single svg sprite
+    await asyncForEach(files, (file) => {
       spriter.add(new File({
-          path: path.join(TEMP_FOLDER_DIR, file),
-          base: TEMP_FOLDER_DIR,
-          contents: fs.readFileSync(path.join(TEMP_FOLDER_DIR, file))
+        path: path.join(TEMP_FOLDER_DIR, file),
+        base: TEMP_FOLDER_DIR,
+        contents: fs.readFileSync(path.join(TEMP_FOLDER_DIR, file))
       }));
       spriter.compile((error, result, data) => {
         for (let mode in result) {
           for (let resource in result[mode]) {
-            mkdirp.sync(path.dirname(path.resolve(__dirname, exportPath + 'icons.svg')));
-            fs.writeFileSync(path.resolve(__dirname, exportPath + 'icons.svg'), result[mode][resource].contents);
+            mkdirp.sync(path.dirname(path.resolve(__dirname, projectPathWithoutFilename + 'icons.svg')));
+            fs.writeFileSync(path.resolve(__dirname, projectPathWithoutFilename + 'icons.svg'), result[mode][resource].contents);
           }
         }
       });
     })
+
+    // 5. Clear icons
+    await fs.readdir(TEMP_FOLDER_DIR, async (err, files) => {
+      if (err) throw err;
+      for (const file of files) {
+        await fs.unlink(path.join(TEMP_FOLDER_DIR, file), err => {
+          if (err) throw err;
+        });
+      }
+    });
   });
-
-  // 4. Compile added SVGs into single svg sprite
-
-  // 5. Clear icons
-
-  /* fs.readdir(TEMP_FOLDER, (err, files) => {
-    if (err) throw err;
-
-    for (const file of files) {
-      fs.unlink(path.join(TEMP_FOLDER, file), err => {
-        if (err) throw err;
-      });
-    }
-  }); */
+  
 
   // 6. Return result
-  return await res.send('done?');
+  return await res.send({
+    message: "Sprite successfully generated."
+  });
 });
 
 app.post('/api/remove-icon', async (req, res) => {
