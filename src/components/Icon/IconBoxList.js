@@ -1,5 +1,5 @@
-import React  from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const StyledIconBoxRow = styled.ul`
   display: flex;
@@ -8,12 +8,8 @@ const StyledIconBoxRow = styled.ul`
   padding: 5px;
 `;
 
-const IconBoxRow = (props) => {
-  return (
-      <StyledIconBoxRow {...props}>
-        {props.children}
-      </StyledIconBoxRow>
-  );
+const IconBoxRow = props => {
+  return <StyledIconBoxRow {...props}>{props.children}</StyledIconBoxRow>;
 };
 
 export default IconBoxRow;

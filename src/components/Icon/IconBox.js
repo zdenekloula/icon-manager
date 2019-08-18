@@ -1,6 +1,5 @@
-import React  from 'react';
-import styled from 'styled-components';
-//import { theme } from '../../config'
+import React from "react";
+import styled from "styled-components";
 
 export const IconBoxContainer = styled.div`
   position: relative;
@@ -8,14 +7,14 @@ export const IconBoxContainer = styled.div`
   flex-wrap: wrap;
   padding: 15px;
   border-radius: 5px;
-  background: ${(props) => props.theme.backgroundTertiary};
+  background: ${props => props.theme.backgroundTertiary};
   max-width: 200px;
   height: 100%;
 `;
 
 const IconBoxIcon = styled.div`
   width: 100%;
-  color: ${(props) => props.theme.fontColor};
+  color: ${props => props.theme.fontColor};
   svg {
     max-height: 28px;
     fill: currentColor;
@@ -32,15 +31,15 @@ const IconBoxTitle = styled.h2`
   margin: 10px 0 0 0;
   width: 100%;
   text-overflow: ellipsis;
-  color: ${(props) => props.theme.fontColor};
+  color: ${props => props.theme.fontColor};
   font-weight: 400;
 `;
 
-const IconBox = (props) => {
+const IconBox = props => {
   const { name, source } = props.data;
   return (
     <IconBoxContainer {...props}>
-      <IconBoxIcon dangerouslySetInnerHTML={{__html: source}} ></IconBoxIcon>
+      <IconBoxIcon dangerouslySetInnerHTML={{ __html: source }} />
       <IconBoxTitle>{name}</IconBoxTitle>
     </IconBoxContainer>
   );

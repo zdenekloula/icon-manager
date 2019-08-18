@@ -1,8 +1,8 @@
-import React, {useState, useEffect, useRef, useCallback } from 'react';
-import { settings } from './config'
-import Layout from './components/Layout/Layout'
-import LayoutColumn from './components/Layout/LayoutColumn'
-import LayoutResizeableColumns from './components/Layout/LayoutResizeableColumns'
+import React, { useState, useEffect, useRef, useCallback } from "react";
+import { settings } from "./config";
+import Layout from "./components/Layout/Layout";
+import LayoutColumn from "./components/Layout/LayoutColumn";
+import LayoutResizeableColumns from "./components/Layout/LayoutResizeableColumns";
 import LayoutColumnLibrary from "./components/Layout/LayoutColumnLibrary";
 import LayoutColumnUser from "./components/Layout/LayoutColumnUser";
 import LayoutColumnFixed from "./components/Layout/LayoutColumnFixed";
@@ -18,46 +18,52 @@ function Manager(props) {
     right: settings.userColumnSize,
   });
 
-  const setMoveEvent = useCallback((event) => {
-    if (!columnsHandleIsDragging) {
-      return false
-    }
-    const containerWidth = columnsWrapperEl.current.offsetWidth;
-    const containerLeftOffset = columnsWrapperEl.current.offsetLeft;
-    const pointerXPosition = event.clientX - containerLeftOffset;
-    const boxMinWidth = 250;
-
-    const leftColumn = (Math.max(boxMinWidth, pointerXPosition) / containerWidth) * 100;
-    const rightColumn = (Math.max(boxMinWidth, (containerWidth - pointerXPosition)) / containerWidth) * 100;
-
-    const calculateLeftColumn = () => {
-      if (!(leftColumn + rightColumn > 100)) {
-        return leftColumn;
+  const setMoveEvent = useCallback(
+    event => {
+      if (!columnsHandleIsDragging) {
+        return false;
       }
-    };
+      const containerWidth = columnsWrapperEl.current.offsetWidth;
+      const containerLeftOffset = columnsWrapperEl.current.offsetLeft;
+      const pointerXPosition = event.clientX - containerLeftOffset;
+      const boxMinWidth = 250;
 
-    const calculateRightColumn = () => {
-      if (!(leftColumn + rightColumn > 100)) {
-        return rightColumn;
-      }
-    };
+      const leftColumn =
+        (Math.max(boxMinWidth, pointerXPosition) / containerWidth) * 100;
+      const rightColumn =
+        (Math.max(boxMinWidth, containerWidth - pointerXPosition) /
+          containerWidth) *
+        100;
 
-    setColumnsSizes({
-      left: calculateLeftColumn(),
-      right: calculateRightColumn()
-    });
+      const calculateLeftColumn = () => {
+        if (!(leftColumn + rightColumn > 100)) {
+          return leftColumn;
+        }
+      };
 
-  }, [columnsHandleIsDragging]);
+      const calculateRightColumn = () => {
+        if (!(leftColumn + rightColumn > 100)) {
+          return rightColumn;
+        }
+      };
+
+      setColumnsSizes({
+        left: calculateLeftColumn(),
+        right: calculateRightColumn(),
+      });
+    },
+    [columnsHandleIsDragging],
+  );
 
   useEffect(() => {
-    document.addEventListener('mousedown', (event) => {
+    document.addEventListener("mousedown", event => {
       if (event.target === columnsHandleEl.current) {
         setColumnsHandleIsDragging(true);
       }
     });
 
-    document.addEventListener('mousemove', setMoveEvent);
-    document.addEventListener('mouseup', function () {
+    document.addEventListener("mousemove", setMoveEvent);
+    document.addEventListener("mouseup", function() {
       setColumnsHandleIsDragging(false);
     });
 
@@ -66,24 +72,43 @@ function Manager(props) {
     };
   }, [columnsHandleIsDragging, setMoveEvent]);
 
-  const setLibrary = (index) => {
+  const setLibrary = index => {
     setActiveLibrary(index);
   };
 
   return (
-      <Layout>
-        <LayoutColumn isFixed>
-          <LayoutColumnFixed data={props.appData} setLibrary={setLibrary} activeLibrary={activeLibrary} />
+    <Layout>
+      <LayoutColumn isFixed>
+        <LayoutColumnFixed
+          data={props.appData}
+          setLibrary={setLibrary}
+          activeLibrary={activeLibrary}
+        />
+      </LayoutColumn>
+      <LayoutResizeableColumns ref={columnsWrapperEl}>
+        <LayoutColumn
+          isDragging={columnsHandleIsDragging}
+          style={{ width: columnsSizes.left + "%" }}
+          isLibraryColumn
+        >
+          <LayoutColumnLibrary
+            data={props.appData}
+            activeLibrary={activeLibrary}
+          />
         </LayoutColumn>
-        <LayoutResizeableColumns ref={columnsWrapperEl}>
-          <LayoutColumn isDragging={columnsHandleIsDragging} style={{width: columnsSizes.left + '%'}} isLibraryColumn>
-            <LayoutColumnLibrary data={props.appData} activeLibrary={activeLibrary} />
-          </LayoutColumn>
-          <LayoutColumn isDragging={columnsHandleIsDragging} style={{width: columnsSizes.right + '%'}} ref={columnsHandleEl} hasHandle>
-            <LayoutColumnUser data={props.appData} activeProject={activeProject} />
-          </LayoutColumn>
-        </LayoutResizeableColumns>
-      </Layout>
+        <LayoutColumn
+          isDragging={columnsHandleIsDragging}
+          style={{ width: columnsSizes.right + "%" }}
+          ref={columnsHandleEl}
+          hasHandle
+        >
+          <LayoutColumnUser
+            data={props.appData}
+            activeProject={activeProject}
+          />
+        </LayoutColumn>
+      </LayoutResizeableColumns>
+    </Layout>
   );
 }
 

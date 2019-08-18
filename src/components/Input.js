@@ -1,21 +1,14 @@
-import React  from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
-const StyledInput = styled((props) => {
-  const {
-    className,
-    children,
-    spaceAfter,
-    ...otherProps
-  } = props;
-  return(
-      <input className={className} {...otherProps} />
-  )
+const StyledInput = styled(props => {
+  const { className, children, spaceAfter, ...otherProps } = props;
+  return <input className={className} {...otherProps} />;
 })`
   display: block;
-  border: 1px solid ${({theme}) => theme.borderColor};
+  border: 1px solid ${({ theme }) => theme.borderColor};
   padding: 14px 19px 15px;
-  background: ${({theme}) => theme.backgroundInput};
+  background: ${({ theme }) => theme.backgroundInput};
   font-size: 14px;
   line-height: normal;
   width: 100%;
@@ -23,23 +16,17 @@ const StyledInput = styled((props) => {
   border-radius: 2px;
   appearance: none;
   transition: border-color 0.3s;
-  color: ${({theme}) => theme.fontColor};
+  color: ${({ theme }) => theme.fontColor};
   box-sizing: border-box;
-  margin-bottom: ${({spaceAfter}) => spaceAfter}px;
+  margin-bottom: ${({ spaceAfter }) => spaceAfter}px;
   &:focus {
     outline: 0;
   }
 `;
 
-const Input = (props) => {
-  const {
-    className,
-    spaceAfter,
-    ...otherProps
-  } = props;
-  return (
-    <StyledInput {...otherProps} spaceAfter={spaceAfter} />
-  )
+const Input = props => {
+  const { className, spaceAfter, ...otherProps } = props;
+  return <StyledInput {...otherProps} spaceAfter={spaceAfter} />;
 };
 
 export default Input;

@@ -1,5 +1,5 @@
-import React  from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const StyledIconBoxListWrapper = styled.div`
   display: block;
@@ -8,11 +8,11 @@ const StyledIconBoxListWrapper = styled.div`
   padding: 0 15px 0 0;
 `;
 
-const IconBoxListWrapper = (props) => {
+const IconBoxListWrapper = props => {
   return (
-      <StyledIconBoxListWrapper {...props}>
-        {props.children}
-      </StyledIconBoxListWrapper>
+    <StyledIconBoxListWrapper {...props}>
+      {props.children}
+    </StyledIconBoxListWrapper>
   );
 };
 

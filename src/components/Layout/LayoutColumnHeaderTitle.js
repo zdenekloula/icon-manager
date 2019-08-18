@@ -1,6 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
-import { StyledButton } from '../Button';
+import React from "react";
+import styled from "styled-components";
+import { StyledButton } from "../Button";
 
 const StyledLayoutColumnHeaderTitle = styled.div`
   display: flex;
@@ -11,7 +11,7 @@ const StyledLayoutColumnHeaderTitle = styled.div`
   }
 `;
 
-const LayoutColumnHeaderTitle = (props) => {
+const LayoutColumnHeaderTitle = props => {
   return (
     <StyledLayoutColumnHeaderTitle {...props}>
       {props.children}

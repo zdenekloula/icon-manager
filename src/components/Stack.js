@@ -1,5 +1,5 @@
-import React  from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const StyledStack = styled.div`
   & > * {
@@ -10,17 +10,9 @@ const StyledStack = styled.div`
   }
 `;
 
-const Stack = (props) => {
-  const {
-    className,
-    children,
-    ...otherProps
-  } = props;
-  return (
-    <StyledStack {...otherProps}>
-      {children}
-    </StyledStack>
-  )
+const Stack = props => {
+  const { className, children, ...otherProps } = props;
+  return <StyledStack {...otherProps}>{children}</StyledStack>;
 };
 
 export default Stack;

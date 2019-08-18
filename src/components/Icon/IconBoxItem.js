@@ -1,5 +1,5 @@
-import React  from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const IconBoxItem = styled.li`
   vertical-align: top;
@@ -15,12 +15,8 @@ const IconBoxItem = styled.li`
   max-width: 20%;
 `;
 
-const IconBox = (props) => {
-  return (
-      <IconBoxItem {...props}>
-        {props.children}
-      </IconBoxItem>
-  );
+const IconBox = props => {
+  return <IconBoxItem {...props}>{props.children}</IconBoxItem>;
 };
 
 export default IconBox;

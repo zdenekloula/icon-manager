@@ -1,5 +1,5 @@
-import React  from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const LayoutColumnsContainer = styled.div`
   display: flex;
@@ -9,9 +9,9 @@ const LayoutColumnsContainer = styled.div`
 
 const LayoutResizeableColumns = React.forwardRef((props, ref) => {
   return (
-      <LayoutColumnsContainer {...props} ref={ref}>
-        {props.children}
-      </LayoutColumnsContainer>
+    <LayoutColumnsContainer {...props} ref={ref}>
+      {props.children}
+    </LayoutColumnsContainer>
   );
 });
 

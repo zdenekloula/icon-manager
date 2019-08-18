@@ -1,11 +1,14 @@
-import { useState } from 'react';
+import { useState } from "react";
 
-const useForm = (initialState) => {
+const useForm = initialState => {
   const [values, setValues] = useState(initialState ? initialState : {});
 
-  const handleChange = (event) => {
+  const handleChange = event => {
     event.persist();
-    setValues(values => ({ ...values, [event.target.name]: event.target.value }));
+    setValues(values => ({
+      ...values,
+      [event.target.name]: event.target.value,
+    }));
   };
 
   return [values, handleChange];

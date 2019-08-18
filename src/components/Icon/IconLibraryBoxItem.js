@@ -1,5 +1,5 @@
-import React  from 'react';
-import styled from 'styled-components';
+import React from "react";
+import styled from "styled-components";
 
 const StyledIconLibraryBoxItem = styled.div`
   vertical-align: top;
@@ -14,11 +14,11 @@ const StyledIconLibraryBoxItem = styled.div`
   padding: 0 10px 20px 10px;
 `;
 
-const IconLibraryBoxItem = (props) => {
+const IconLibraryBoxItem = props => {
   return (
-      <StyledIconLibraryBoxItem {...props}>
-        {props.children}
-      </StyledIconLibraryBoxItem>
+    <StyledIconLibraryBoxItem {...props}>
+      {props.children}
+    </StyledIconLibraryBoxItem>
   );
 };
 

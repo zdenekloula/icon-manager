@@ -1,10 +1,10 @@
-export const removeExtension = (name) => name.replace(/\.[^/.]+$/, "");
+export const removeExtension = name => name.replace(/\.[^/.]+$/, "");
 
 export const checkIconExists = (iconName, icons) => {
   let exists = false;
   for (const key in icons) {
     const projectIcon = icons[key];
-    if(iconName === projectIcon.name) {
+    if (iconName === projectIcon.name) {
       exists = true;
     }
   }
@@ -19,7 +19,7 @@ export const getIconWithIndex = (icon, icons) => {
 
   for (const key in icons) {
     const projectIcon = icons[key];
-    if(name === projectIcon.name || projectIcon.name.includes(name + "-")) {
+    if (name === projectIcon.name || projectIcon.name.includes(name + "-")) {
       iconNewIndex++;
       iconNameWithIndex = `${name}-${iconNewIndex}`;
     } else {
@@ -28,13 +28,13 @@ export const getIconWithIndex = (icon, icons) => {
   }
 
   return {
-    "filename": iconNameWithIndex + ".svg",
-    "name": iconNameWithIndex,
-    "source": source
+    filename: iconNameWithIndex + ".svg",
+    name: iconNameWithIndex,
+    source: source,
   };
 };
 
-export const readTextFileAsync = (file) => {
+export const readTextFileAsync = file => {
   return new Promise((resolve, reject) => {
     let reader = new FileReader();
 
@@ -45,28 +45,40 @@ export const readTextFileAsync = (file) => {
     reader.onerror = reject;
 
     reader.readAsText(file);
-  })
-}
+  });
+};
 
-export const postData = (url = '', data = {}) => {
+export const postData = (url = "", data = {}) => {
   return fetch(url, {
-    method: 'POST',
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json',
+      "Content-Type": "application/json",
     },
     body: data, // body data type must match "Content-Type" header, it's json in this case
-  })
-      .then(response => response.json());
+  }).then(response => response.json());
 };
 
 export const guidGenerator = () => {
   const S4 = function() {
-    return (((1+Math.random())*0x10000)|0).toString(16).substring(1);
+    return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
   };
-  return (S4()+S4()+"-"+S4()+"-"+S4()+"-"+S4()+"-"+S4()+S4()+S4());
+  return (
+    S4() +
+    S4() +
+    "-" +
+    S4() +
+    "-" +
+    S4() +
+    "-" +
+    S4() +
+    "-" +
+    S4() +
+    S4() +
+    S4()
+  );
 };
 
-export const removeFilenameFromPath = (str) => {
-  const file = str.split('/').pop();
+export const removeFilenameFromPath = str => {
+  const file = str.split("/").pop();
   return str.replace(file, "");
 };
