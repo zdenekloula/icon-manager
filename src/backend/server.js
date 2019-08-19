@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 const fs = require("fs");
 const path = require("path");
 const express = require("express");
@@ -581,23 +582,17 @@ app.post("/api/remove-icon", async (req, res) => {
 });
 
 app.get("/api/generate-library", async (req, res) => {
-  /* let libraryJson = {
-    "name": "Font Awesome 5 Solid",
-    "filename": "fa-solid",
-    "icons": []
-  }; */
-
   let libraryJson = {
-    name: "Material Design Icons",
-    filename: "material-icons",
+    name: "Font Awesome 5 Brands",
+    filename: "fa-brands",
     icons: [],
   };
 
-  await readIcons(path.resolve(__dirname, "icons/material-icons"))
+  await readIcons(path.resolve(__dirname, "icons/fa-brands"))
     .then(items => (libraryJson.icons = items))
     .then(() => {
       fs.writeFile(
-        path.resolve(__dirname, "libraries/material-icons.json"),
+        path.resolve(__dirname, "libraries/fa-brands.json"),
         JSON.stringify(libraryJson),
         err => {
           if (err) console.log("Error writing file:", err);

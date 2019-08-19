@@ -65,17 +65,17 @@ const ToggleContainer = styled.div`
 const LayoutColumnLibrary = props => {
   const {
     librariesData,
-    updateLibrariesData,
+    //updateLibrariesData,
     activeLibrary,
     setActiveLibrary,
   } = useContext(AppContext);
 
-  const appendTestLibrary = () => {
+  /* const appendTestLibrary = () => {
     let testLibrary = {
       name: "Test Library",
     };
     updateLibrariesData([...librariesData, testLibrary]);
-  };
+  }; */
 
   return (
     <div>
