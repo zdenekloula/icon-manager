@@ -58,7 +58,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, '../../build')));
+app.use(express.static(path.join(__dirname, "../../build")));
 
 function promiseAllP(items, block) {
   var promises = [];
@@ -215,6 +215,10 @@ app.post("/api/append-project", async (req, res) => {
     filename: projectData.filename,
     icons: [],
   };
+
+  if (!fs.existsSync(projectData.local_path)) {
+    await fs.mkdirSync(projectData.local_path);
+  }
 
   // Create project file in directory
   await fs.writeFile(
