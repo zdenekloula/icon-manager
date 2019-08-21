@@ -485,8 +485,8 @@ app.post("/api/generate-sprite", async (req, res) => {
     .catch(err => console.log(err));
 
   // 2. Create temp folder with all SVGs from JSON project for sprite generation
-  if (!fs.existsSync(TEMP_FOLDER)) {
-    await fs.mkdirSync(TEMP_FOLDER);
+  if (!fs.existsSync(TEMP_FOLDER_DIR)) {
+    await fs.mkdirSync(TEMP_FOLDER_DIR);
   }
 
   await localProjectData.icons.map(icon => {
