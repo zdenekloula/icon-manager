@@ -259,7 +259,9 @@ app.post("/api/update-project", async (req, res) => {
   let isProjectFilenameRenamed = false;
 
   // 2. Read settings file
-  let settingsData = await readSingleFile("projects/projects.json")
+  let settingsData = await readSingleFile(
+    path.resolve(__dirname, "projects/projects.json"),
+  )
     .then(fileContent => fileContent)
     .catch(err => console.log(err));
 
@@ -399,9 +401,9 @@ app.post("/api/remove-project", async (req, res) => {
   });
 
   // 3. get and update settings file
-  const settingsData = await readSingleFile("projects/projects.json").then(
-    fileContent => fileContent,
-  );
+  const settingsData = await readSingleFile(
+    path.resolve(__dirname, "projects/projects.json"),
+  ).then(fileContent => fileContent);
 
   const newSettingsData = settingsData.filter(projectSettings => {
     return projectData.id !== projectSettings.id;
