@@ -230,7 +230,9 @@ app.post("/api/append-project", async (req, res) => {
   );
 
   // 3. Handle local settings
-  let settingsData = await readSingleFile("projects/projects.json")
+  let settingsData = await readSingleFile(
+    path.resolve(__dirname, "projects/projects.json"),
+  )
     .then(fileContent => fileContent)
     .catch(err => console.log(err));
 
