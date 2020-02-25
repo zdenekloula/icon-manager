@@ -4,6 +4,10 @@
 
 Tool for svg icon sprite generating.
 
+
+# How to use it (install + usage example)
+https://www.youtube.com/watch?v=3sjY7DDBbs0
+
 # What to do
 ## Install
 ```
@@ -20,6 +24,3 @@ icon-manager
 ```
 npm install -g icon-manager --unsafe-perm
 ```
-
-# How to use it (install + usage example)
-https://www.youtube.com/watch?v=3sjY7DDBbs0
